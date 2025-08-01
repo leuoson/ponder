@@ -12,7 +12,7 @@
 </div>
 <br>
 <div align="center">
-  <h1>Roo Code</h1>
+  <h1>Ponder</h1>
   <p align="center">
   <img src="https://media.githubusercontent.com/media/RooCodeInc/Roo-Code/main/src/assets/docs/demo.gif" width="100%" />
   </p>
@@ -34,7 +34,7 @@
 
 </div>
 
-**Roo Code** is an AI-powered **autonomous coding agent** that lives in your editor. It can:
+**Ponder** is an AI-powered **autonomous coding agent** that lives in your editor. It can:
 
 - Communicate in natural language
 - Read and write files directly in your workspace
@@ -43,7 +43,7 @@
 - Integrate with any OpenAI-compatible or custom API/model
 - Adapt its “personality” and capabilities through **Custom Modes**
 
-Whether you’re seeking a flexible coding partner, a system architect, or specialized roles like a QA engineer or product manager, Roo Code can help you build software more efficiently.
+Whether you’re seeking a flexible coding partner, a system architect, or specialized roles like a QA engineer or product manager, Ponder can help you build software more efficiently.
 
 Check out the [CHANGELOG](CHANGELOG.md) for detailed updates and fixes.
 
@@ -138,13 +138,13 @@ pnpm install
 
 3. **Run the extension**:
 
-There are several ways to run the Roo Code extension:
+There are several ways to run the Ponder extension:
 
 ### Development Mode (F5)
 
 For active development, use VSCode's built-in debugging:
 
-Press `F5` (or go to **Run** → **Start Debugging**) in VSCode. This will open a new VSCode window with the Roo Code extension running.
+Press `F5` (or go to **Run** → **Start Debugging**) in VSCode. This will open a new VSCode window with the Ponder extension running.
 
 - Changes to the webview will appear immediately.
 - Changes to the core extension will also hot reload automatically.
@@ -178,10 +178,10 @@ If you prefer to install the VSIX package manually:
     ```sh
     pnpm vsix
     ```
-2.  A `.vsix` file will be generated in the `bin/` directory (e.g., `bin/roo-cline-<version>.vsix`).
+2.  A `.vsix` file will be generated in the `bin/` directory (e.g., `bin/ponder-<version>.vsix`).
 3.  Install it manually using the VSCode CLI:
     ```sh
-    code --install-extension bin/roo-cline-<version>.vsix
+    code --install-extension bin/ponder-<version>.vsix
     ```
 
 ---

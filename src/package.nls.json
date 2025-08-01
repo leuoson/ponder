@@ -1,10 +1,10 @@
 {
-	"extension.displayName": "Roo Code",
+	"extension.displayName": "Ponder",
 	"extension.description": "A whole dev team of AI agents in your editor.",
-	"views.contextMenu.label": "Roo Code",
-	"views.terminalMenu.label": "Roo Code",
-	"views.activitybar.title": "Roo Code",
-	"views.sidebar.name": "Roo Code",
+	"views.contextMenu.label": "Ponder",
+	"views.terminalMenu.label": "Ponder",
+	"views.activitybar.title": "Ponder",
+	"views.sidebar.name": "Ponder",
 	"command.newTask.title": "New Task",
 	"command.mcpServers.title": "MCP Servers",
 	"command.prompts.title": "Modes",
@@ -34,8 +34,8 @@
 	"settings.vsCodeLmModelSelector.description": "Settings for VSCode Language Model API",
 	"settings.vsCodeLmModelSelector.vendor.description": "The vendor of the language model (e.g. copilot)",
 	"settings.vsCodeLmModelSelector.family.description": "The family of the language model (e.g. gpt-4)",
-	"settings.customStoragePath.description": "Custom storage path. Leave empty to use the default location. Supports absolute paths (e.g. 'D:\\RooCodeStorage')",
-	"settings.enableCodeActions.description": "Enable Roo Code quick fixes",
-	"settings.autoImportSettingsPath.description": "Path to a RooCode configuration file to automatically import on extension startup. Supports absolute paths and paths relative to the home directory (e.g. '~/Documents/roo-code-settings.json'). Leave empty to disable auto-import.",
+	"settings.customStoragePath.description": "Custom storage path. Leave empty to use the default location. Supports absolute paths (e.g. 'D:\\PonderStorage')",
+	"settings.enableCodeActions.description": "Enable Ponder quick fixes",
+	"settings.autoImportSettingsPath.description": "Path to a Ponder configuration file to automatically import on extension startup. Supports absolute paths and paths relative to the home directory (e.g. '~/Documents/ponder-settings.json'). Leave empty to disable auto-import.",
 	"settings.useAgentRules.description": "Enable loading of AGENTS.md files for agent-specific rules (see https://agent-rules.org/)"
 }
