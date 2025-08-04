@@ -562,14 +562,14 @@ export class CustomModesManager {
 			if (scope === "project") {
 				const workspacePath = getWorkspacePath()
 				if (workspacePath) {
-					rulesFolderPath = path.join(workspacePath, ".roo", `rules-${slug}`)
+					rulesFolderPath = path.join(workspacePath, ".ponder", `rules-${slug}`)
 				} else {
 					return // No workspace, can't delete project rules
 				}
 			} else {
 				// Global scope - use OS home directory
 				const homeDir = os.homedir()
-				rulesFolderPath = path.join(homeDir, ".roo", `rules-${slug}`)
+				rulesFolderPath = path.join(homeDir, ".ponder", `rules-${slug}`)
 			}
 
 			// Check if the rules folder exists and delete it
@@ -652,16 +652,16 @@ export class CustomModesManager {
 			const isGlobalMode = mode?.source === "global"
 
 			if (isGlobalMode) {
-				// For global modes, check in global .roo directory
+				// For global modes, check in global .ponder directory
 				const globalRooDir = getGlobalRooDirectory()
 				modeRulesDir = path.join(globalRooDir, `rules-${slug}`)
 			} else {
-				// For project modes, check in workspace .roo directory
+				// For project modes, check in workspace .ponder directory
 				const workspacePath = getWorkspacePath()
 				if (!workspacePath) {
 					return false
 				}
-				modeRulesDir = path.join(workspacePath, ".roo", `rules-${slug}`)
+				modeRulesDir = path.join(workspacePath, ".ponder", `rules-${slug}`)
 			}
 
 			try {
@@ -786,7 +786,7 @@ export class CustomModesManager {
 								// This excludes the rules-{slug} folder from the path
 								const relativePath = path.relative(modeRulesDir, filePath)
 								// Normalize path to use forward slashes for cross-platform compatibility
-								const normalizedRelativePath = relativePath.replace(/\\/g, '/')
+								const normalizedRelativePath = relativePath.replace(/\\/g, "/")
 								rulesFiles.push({ relativePath: normalizedRelativePath, content: content.trim() })
 							}
 						}

@@ -4,22 +4,22 @@ import ignore, { Ignore } from "ignore"
 export const SHIELD_SYMBOL = "\u{1F6E1}"
 
 /**
- * Controls write access to Roo configuration files by enforcing protection patterns.
- * Prevents auto-approved modifications to sensitive Roo configuration files.
+ * Controls write access to Ponder configuration files by enforcing protection patterns.
+ * Prevents auto-approved modifications to sensitive Ponder configuration files.
  */
 export class RooProtectedController {
 	private cwd: string
 	private ignoreInstance: Ignore
 
-	// Predefined list of protected Roo configuration patterns
+	// Predefined list of protected Ponder configuration patterns
 	private static readonly PROTECTED_PATTERNS = [
 		".rooignore",
 		".roomodes",
-		".roorules*",
+		".ponderrules*",
 		".clinerules*",
-		".roo/**",
+		".ponder/**",
 		".vscode/**",
-		".rooprotected", // For future use
+		".ponderprotected", // For future use
 		"AGENTS.md",
 	]
 

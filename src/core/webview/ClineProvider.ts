@@ -2002,13 +2002,13 @@ export class ClineProvider
 
 		// Return all properties including git info - clients will filter as needed
 		return {
-			appName: packageJSON?.name ?? Package.name,
-			appVersion: packageJSON?.version ?? Package.version,
-			vscodeVersion: vscode.version,
-			platform: process.platform,
-			editorName: vscode.env.appName,
-			language,
-			mode,
+			appName: packageJSON?.name ?? Package.name ?? "ponder",
+			appVersion: packageJSON?.version ?? Package.version ?? "unknown",
+			vscodeVersion: vscode.version ?? "unknown",
+			platform: process.platform ?? "unknown",
+			editorName: vscode.env.appName ?? "vscode",
+			language: language ?? "unknown",
+			mode: mode ?? "unknown",
 			apiProvider: apiConfiguration?.apiProvider,
 			modelId: task?.api?.getModel().id,
 			diffStrategy: task?.diffStrategy?.getName(),
