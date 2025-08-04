@@ -1,5 +1,5 @@
 {
-	"greeting": "Welcome to Roo Code!",
+	"greeting": "Welcome to Ponder!",
 	"task": {
 		"title": "Task",
 		"seeMore": "See more",
@@ -18,7 +18,7 @@
 		"sharePublicly": "Share Publicly",
 		"sharePubliclyDescription": "Anyone with the link can access",
 		"connectToCloud": "Connect to Cloud",
-		"connectToCloudDescription": "Sign in to Roo Code Cloud to share tasks",
+		"connectToCloudDescription": "Sign in to Ponder Cloud to share tasks",
 		"sharingDisabledByOrganization": "Sharing disabled by organization",
 		"shareSuccessOrganization": "Organization link copied to clipboard",
 		"shareSuccessPublic": "Public link copied to clipboard"
@@ -118,7 +118,7 @@
 		"title": "Modes",
 		"marketplace": "Mode Marketplace",
 		"settings": "Mode Settings",
-		"description": "Specialized personas that tailor Roo's behavior.",
+		"description": "Specialized personas that tailor Ponder's behavior.",
 		"searchPlaceholder": "Search modes...",
 		"noResults": "No results found"
 	},
@@ -168,46 +168,46 @@
 		"tokens": "tokens"
 	},
 	"instructions": {
-		"wantsToFetch": "Roo wants to fetch detailed instructions to assist with the current task"
+		"wantsToFetch": "Ponder wants to fetch detailed instructions to assist with the current task"
 	},
 	"fileOperations": {
-		"wantsToRead": "Roo wants to read this file:",
-		"wantsToReadMultiple": "Roo wants to read multiple files:",
-		"wantsToReadAndXMore": "Roo wants to read this file and {{count}} more:",
-		"wantsToReadOutsideWorkspace": "Roo wants to read this file outside of the workspace:",
-		"didRead": "Roo read this file:",
-		"wantsToEdit": "Roo wants to edit this file:",
-		"wantsToEditOutsideWorkspace": "Roo wants to edit this file outside of the workspace:",
-		"wantsToEditProtected": "Roo wants to edit a protected configuration file:",
-		"wantsToApplyBatchChanges": "Roo wants to apply changes to multiple files:",
-		"wantsToCreate": "Roo wants to create a new file:",
-		"wantsToSearchReplace": "Roo wants to search and replace in this file:",
-		"didSearchReplace": "Roo performed search and replace on this file:",
-		"wantsToInsert": "Roo wants to insert content into this file:",
-		"wantsToInsertWithLineNumber": "Roo wants to insert content into this file at line {{lineNumber}}:",
-		"wantsToInsertAtEnd": "Roo wants to append content to the end of this file:"
+		"wantsToRead": "Ponder wants to read this file:",
+		"wantsToReadMultiple": "Ponder wants to read multiple files:",
+		"wantsToReadAndXMore": "Ponder wants to read this file and {{count}} more:",
+		"wantsToReadOutsideWorkspace": "Ponder wants to read this file outside of the workspace:",
+		"didRead": "Ponder read this file:",
+		"wantsToEdit": "Ponder wants to edit this file:",
+		"wantsToEditOutsideWorkspace": "Ponder wants to edit this file outside of the workspace:",
+		"wantsToEditProtected": "Ponder wants to edit a protected configuration file:",
+		"wantsToApplyBatchChanges": "Ponder wants to apply changes to multiple files:",
+		"wantsToCreate": "Ponder wants to create a new file:",
+		"wantsToSearchReplace": "Ponder wants to search and replace in this file:",
+		"didSearchReplace": "Ponder performed search and replace on this file:",
+		"wantsToInsert": "Ponder wants to insert content into this file:",
+		"wantsToInsertWithLineNumber": "Ponder wants to insert content into this file at line {{lineNumber}}:",
+		"wantsToInsertAtEnd": "Ponder wants to append content to the end of this file:"
 	},
 	"directoryOperations": {
-		"wantsToViewTopLevel": "Roo wants to view the top level files in this directory:",
-		"didViewTopLevel": "Roo viewed the top level files in this directory:",
-		"wantsToViewTopLevelOutsideWorkspace": "Roo wants to view the top level files in this directory (outside workspace):",
-		"didViewTopLevelOutsideWorkspace": "Roo viewed the top level files in this directory (outside workspace):",
-		"wantsToViewRecursive": "Roo wants to recursively view all files in this directory:",
-		"didViewRecursive": "Roo recursively viewed all files in this directory:",
-		"wantsToViewRecursiveOutsideWorkspace": "Roo wants to recursively view all files in this directory (outside workspace):",
-		"didViewRecursiveOutsideWorkspace": "Roo recursively viewed all files in this directory (outside workspace):",
-		"wantsToViewDefinitions": "Roo wants to view source code definition names used in this directory:",
-		"didViewDefinitions": "Roo viewed source code definition names used in this directory:",
-		"wantsToViewDefinitionsOutsideWorkspace": "Roo wants to view source code definition names used in this directory (outside workspace):",
-		"didViewDefinitionsOutsideWorkspace": "Roo viewed source code definition names used in this directory (outside workspace):",
-		"wantsToSearch": "Roo wants to search this directory for <code>{{regex}}</code>:",
-		"didSearch": "Roo searched this directory for <code>{{regex}}</code>:",
-		"wantsToSearchOutsideWorkspace": "Roo wants to search this directory (outside workspace) for <code>{{regex}}</code>:",
-		"didSearchOutsideWorkspace": "Roo searched this directory (outside workspace) for <code>{{regex}}</code>:"
+		"wantsToViewTopLevel": "Ponder wants to view the top level files in this directory:",
+		"didViewTopLevel": "Ponder viewed the top level files in this directory:",
+		"wantsToViewTopLevelOutsideWorkspace": "Ponder wants to view the top level files in this directory (outside workspace):",
+		"didViewTopLevelOutsideWorkspace": "Ponder viewed the top level files in this directory (outside workspace):",
+		"wantsToViewRecursive": "Ponder wants to recursively view all files in this directory:",
+		"didViewRecursive": "Ponder recursively viewed all files in this directory:",
+		"wantsToViewRecursiveOutsideWorkspace": "Ponder wants to recursively view all files in this directory (outside workspace):",
+		"didViewRecursiveOutsideWorkspace": "Ponder recursively viewed all files in this directory (outside workspace):",
+		"wantsToViewDefinitions": "Ponder wants to view source code definition names used in this directory:",
+		"didViewDefinitions": "Ponder viewed source code definition names used in this directory:",
+		"wantsToViewDefinitionsOutsideWorkspace": "Ponder wants to view source code definition names used in this directory (outside workspace):",
+		"didViewDefinitionsOutsideWorkspace": "Ponder viewed source code definition names used in this directory (outside workspace):",
+		"wantsToSearch": "Ponder wants to search this directory for <code>{{regex}}</code>:",
+		"didSearch": "Ponder searched this directory for <code>{{regex}}</code>:",
+		"wantsToSearchOutsideWorkspace": "Ponder wants to search this directory (outside workspace) for <code>{{regex}}</code>:",
+		"didSearchOutsideWorkspace": "Ponder searched this directory (outside workspace) for <code>{{regex}}</code>:"
 	},
 	"codebaseSearch": {
-		"wantsToSearch": "Roo wants to search the codebase for <code>{{query}}</code>:",
-		"wantsToSearchWithPath": "Roo wants to search the codebase for <code>{{query}}</code> in <code>{{path}}</code>:",
+		"wantsToSearch": "Ponder wants to search the codebase for <code>{{query}}</code>:",
+		"wantsToSearchWithPath": "Ponder wants to search the codebase for <code>{{query}}</code> in <code>{{path}}</code>:",
 		"didSearch_one": "Found 1 result",
 		"didSearch_other": "Found {{count}} results",
 		"resultTooltip": "Similarity score: {{score}} (click to open file)"
@@ -232,18 +232,18 @@
 	"response": "Response",
 	"arguments": "Arguments",
 	"mcp": {
-		"wantsToUseTool": "Roo wants to use a tool on the {{serverName}} MCP server:",
-		"wantsToAccessResource": "Roo wants to access a resource on the {{serverName}} MCP server:"
+		"wantsToUseTool": "Ponder wants to use a tool on the {{serverName}} MCP server:",
+		"wantsToAccessResource": "Ponder wants to access a resource on the {{serverName}} MCP server:"
 	},
 	"modes": {
-		"wantsToSwitch": "Roo wants to switch to {{mode}} mode",
-		"wantsToSwitchWithReason": "Roo wants to switch to {{mode}} mode because: {{reason}}",
-		"didSwitch": "Roo switched to {{mode}} mode",
-		"didSwitchWithReason": "Roo switched to {{mode}} mode because: {{reason}}"
+		"wantsToSwitch": "Ponder wants to switch to {{mode}} mode",
+		"wantsToSwitchWithReason": "Ponder wants to switch to {{mode}} mode because: {{reason}}",
+		"didSwitch": "Ponder switched to {{mode}} mode",
+		"didSwitchWithReason": "Ponder switched to {{mode}} mode because: {{reason}}"
 	},
 	"subtasks": {
-		"wantsToCreate": "Roo wants to create a new subtask in {{mode}} mode:",
-		"wantsToFinish": "Roo wants to finish this subtask",
+		"wantsToCreate": "Ponder wants to create a new subtask in {{mode}} mode:",
+		"wantsToFinish": "Ponder wants to finish this subtask",
 		"newTaskContent": "Subtask Instructions",
 		"completionContent": "Subtask Completed",
 		"resultContent": "Subtask Results",
@@ -251,30 +251,30 @@
 		"completionInstructions": "Subtask completed! You can review the results and suggest any corrections or next steps. If everything looks good, confirm to return the result to the parent task."
 	},
 	"questions": {
-		"hasQuestion": "Roo has a question:"
+		"hasQuestion": "Ponder has a question:"
 	},
 	"taskCompleted": "Task Completed",
 	"error": "Error",
 	"diffError": {
 		"title": "Edit Unsuccessful"
 	},
-	"troubleMessage": "Roo is having trouble...",
+	"troubleMessage": "Ponder is having trouble...",
 	"powershell": {
 		"issues": "It seems like you're having Windows PowerShell issues, please see this"
 	},
 	"autoApprove": {
 		"title": "Auto-approve:",
 		"none": "None",
-		"description": "Auto-approve allows Roo Code to perform actions without asking for permission. Only enable for actions you fully trust. More detailed configuration available in <settingsLink>Settings</settingsLink>.",
+		"description": "Auto-approve allows Ponder to perform actions without asking for permission. Only enable for actions you fully trust. More detailed configuration available in <settingsLink>Settings</settingsLink>.",
 		"selectOptionsFirst": "Select at least one option below to enable auto-approval",
 		"toggleAriaLabel": "Toggle auto-approval",
 		"disabledAriaLabel": "Auto-approval disabled - select options first"
 	},
 	"announcement": {
-		"title": "🎉 Roo Code {{version}} Released",
-		"description": "Roo Code {{version}} brings powerful new features and significant improvements to enhance your development workflow.",
+		"title": "🎉 Ponder {{version}} Released",
+		"description": "Ponder {{version}} brings powerful new features and significant improvements to enhance your development workflow.",
 		"whatsNew": "What's New",
-		"feature1": "<bold>Message Queueing</bold>: Queue multiple messages while Roo is working, allowing you to continue planning your workflow without interruption.",
+		"feature1": "<bold>Message Queueing</bold>: Queue multiple messages while Ponder is working, allowing you to continue planning your workflow without interruption.",
 		"feature2": "<bold>Custom Slash Commands</bold>: Create personalized slash commands for quick access to frequently used prompts and workflows, with full UI management.",
 		"feature3": "<bold>Enhanced Gemini Tools</bold>: New URL context and Google Search grounding capabilities provide Gemini models with real-time web information and enhanced research abilities.",
 		"hideButton": "Hide announcement",
@@ -290,7 +290,7 @@
 		"countdownDisplay": "{{count}}s"
 	},
 	"browser": {
-		"rooWantsToUse": "Roo wants to use the browser:",
+		"rooWantsToUse": "Ponder wants to use the browser:",
 		"consoleLogs": "Console Logs",
 		"noNewLogs": "(No new logs)",
 		"screenshot": "Browser screenshot",
@@ -324,18 +324,18 @@
 	"profileViolationWarning": "The current profile isn't compatible with your organization's settings",
 	"shellIntegration": {
 		"title": "Command Execution Warning",
-		"description": "Your command is being executed without VSCode terminal shell integration. To suppress this warning you can disable shell integration in the <strong>Terminal</strong> section of the <settingsLink>Roo Code settings</settingsLink> or troubleshoot VSCode terminal integration using the link below.",
+		"description": "Your command is being executed without VSCode terminal shell integration. To suppress this warning you can disable shell integration in the <strong>Terminal</strong> section of the <settingsLink>Ponder settings</settingsLink> or troubleshoot VSCode terminal integration using the link below.",
 		"troubleshooting": "Click here for shell integration documentation."
 	},
 	"ask": {
 		"autoApprovedRequestLimitReached": {
 			"title": "Auto-Approved Request Limit Reached",
-			"description": "Roo has reached the auto-approved limit of {{count}} API request(s). Would you like to reset the count and proceed with the task?",
+			"description": "Ponder has reached the auto-approved limit of {{count}} API request(s). Would you like to reset the count and proceed with the task?",
 			"button": "Reset and Continue"
 		},
 		"autoApprovedCostLimitReached": {
 			"title": "Auto-Approved Cost Limit Reached",
-			"description": "Roo has reached the auto-approved cost limit of ${{count}}. Would you like to reset the cost and proceed with the task?",
+			"description": "Ponder has reached the auto-approved cost limit of ${{count}}. Would you like to reset the cost and proceed with the task?",
 			"button": "Reset and Continue"
 		}
 	},
@@ -350,7 +350,7 @@
 		"ariaLabel": "Version {{version}} - Click to view release notes"
 	},
 	"rooCloudCTA": {
-		"title": "Roo Code Cloud is coming soon!",
+		"title": "Ponder Cloud is coming soon!",
 		"description": "Run Roomote agents in the cloud, access your tasks from anywhere, collaborate with others, and more.",
 		"joinWaitlist": "Join the waitlist to get early access."
 	},

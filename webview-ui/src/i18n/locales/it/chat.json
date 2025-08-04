@@ -1,5 +1,5 @@
 {
-	"greeting": "Benvenuto a Roo Code",
+	"greeting": "Benvenuto a Ponder",
 	"task": {
 		"title": "Attività",
 		"seeMore": "Vedi altro",
@@ -18,7 +18,7 @@
 		"sharePublicly": "Condividi pubblicamente",
 		"sharePubliclyDescription": "Chiunque con il link può accedere",
 		"connectToCloud": "Connetti al Cloud",
-		"connectToCloudDescription": "Accedi a Roo Code Cloud per condividere attività",
+		"connectToCloudDescription": "Accedi a Ponder Cloud per condividere attività",
 		"sharingDisabledByOrganization": "Condivisione disabilitata dall'organizzazione",
 		"shareSuccessOrganization": "Link organizzazione copiato negli appunti",
 		"shareSuccessPublic": "Link pubblico copiato negli appunti"
@@ -116,7 +116,7 @@
 		"title": "Modalità",
 		"marketplace": "Marketplace delle Modalità",
 		"settings": "Impostazioni Modalità",
-		"description": "Personalità specializzate che adattano il comportamento di Roo.",
+		"description": "Personalità specializzate che adattano il comportamento di Ponder.",
 		"searchPlaceholder": "Cerca modalità...",
 		"noResults": "Nessun risultato trovato"
 	},
@@ -272,7 +272,7 @@
 		"detailsDiscussLinks": "Ottieni maggiori dettagli e partecipa alle discussioni su <discordLink>Discord</discordLink> e <redditLink>Reddit</redditLink> 🚀"
 	},
 	"browser": {
-		"rooWantsToUse": "Roo vuole utilizzare il browser:",
+		"rooWantsToUse": "Ponder vuole utilizzare il browser:",
 		"consoleLogs": "Log della console",
 		"noNewLogs": "(Nessun nuovo log)",
 		"screenshot": "Screenshot del browser",

@@ -1,5 +1,5 @@
 {
-	"greeting": "Selamat datang di Roo Code",
+	"greeting": "Selamat datang di Ponder",
 	"task": {
 		"title": "Tugas",
 		"seeMore": "Lihat lebih banyak",
@@ -18,7 +18,7 @@
 		"sharePublicly": "Bagikan secara publik",
 		"sharePubliclyDescription": "Siapa pun dengan tautan dapat mengakses",
 		"connectToCloud": "Hubungkan ke Cloud",
-		"connectToCloudDescription": "Masuk ke Roo Code Cloud untuk berbagi tugas",
+		"connectToCloudDescription": "Masuk ke Ponder Cloud untuk berbagi tugas",
 		"sharingDisabledByOrganization": "Berbagi dinonaktifkan oleh organisasi",
 		"shareSuccessOrganization": "Tautan organisasi disalin ke clipboard",
 		"shareSuccessPublic": "Tautan publik disalin ke clipboard"
@@ -122,7 +122,7 @@
 		"title": "Mode",
 		"marketplace": "Marketplace Mode",
 		"settings": "Pengaturan Mode",
-		"description": "Persona khusus yang menyesuaikan perilaku Roo.",
+		"description": "Persona khusus yang menyesuaikan perilaku Ponder.",
 		"searchPlaceholder": "Cari mode...",
 		"noResults": "Tidak ada hasil yang ditemukan"
 	},
@@ -293,7 +293,7 @@
 		"countdownDisplay": "{{count}}dtk"
 	},
 	"browser": {
-		"rooWantsToUse": "Roo ingin menggunakan browser:",
+		"rooWantsToUse": "Ponder ingin menggunakan browser:",
 		"consoleLogs": "Log Konsol",
 		"noNewLogs": "(Tidak ada log baru)",
 		"screenshot": "Screenshot browser",

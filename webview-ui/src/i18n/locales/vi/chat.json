@@ -1,5 +1,5 @@
 {
-	"greeting": "Chào mừng đến với Roo Code",
+	"greeting": "Chào mừng đến với Ponder",
 	"task": {
 		"title": "Nhiệm vụ",
 		"seeMore": "Xem thêm",
@@ -18,7 +18,7 @@
 		"sharePublicly": "Chia sẻ công khai",
 		"sharePubliclyDescription": "Bất kỳ ai có liên kết đều có thể truy cập",
 		"connectToCloud": "Kết nối với Cloud",
-		"connectToCloudDescription": "Đăng nhập vào Roo Code Cloud để chia sẻ tác vụ",
+		"connectToCloudDescription": "Đăng nhập vào Ponder Cloud để chia sẻ tác vụ",
 		"sharingDisabledByOrganization": "Chia sẻ bị tổ chức vô hiệu hóa",
 		"shareSuccessOrganization": "Liên kết tổ chức đã được sao chép vào clipboard",
 		"shareSuccessPublic": "Liên kết công khai đã được sao chép vào clipboard"
@@ -116,7 +116,7 @@
 		"title": "Chế độ",
 		"marketplace": "Chợ Chế độ",
 		"settings": "Cài đặt Chế độ",
-		"description": "Các nhân cách chuyên biệt điều chỉnh hành vi của Roo.",
+		"description": "Các nhân cách chuyên biệt điều chỉnh hành vi của Ponder.",
 		"searchPlaceholder": "Tìm kiếm chế độ...",
 		"noResults": "Không tìm thấy kết quả nào"
 	},

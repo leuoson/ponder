@@ -1,5 +1,5 @@
 {
-	"greeting": "Roo Code へようこそ",
+	"greeting": "Ponder へようこそ",
 	"task": {
 		"title": "タスク",
 		"seeMore": "もっと見る",
@@ -18,7 +18,7 @@
 		"sharePublicly": "公開で共有",
 		"sharePubliclyDescription": "リンクを持つ誰でもアクセスできます",
 		"connectToCloud": "クラウドに接続",
-		"connectToCloudDescription": "タスクを共有するためにRoo Code Cloudにサインイン",
+		"connectToCloudDescription": "タスクを共有するためにPonder Cloudにサインイン",
 		"sharingDisabledByOrganization": "組織により共有が無効化されています",
 		"shareSuccessOrganization": "組織リンクをクリップボードにコピーしました",
 		"shareSuccessPublic": "公開リンクをクリップボードにコピーしました"
@@ -116,7 +116,7 @@
 		"title": "モード",
 		"marketplace": "モードマーケットプレイス",
 		"settings": "モード設定",
-		"description": "Rooの動作をカスタマイズする専門的なペルソナ。",
+		"description": "Ponderの動作をカスタマイズする専門的なペルソナ。",
 		"searchPlaceholder": "モードを検索...",
 		"noResults": "結果が見つかりません"
 	},

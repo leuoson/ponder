@@ -1,5 +1,5 @@
 {
-	"greeting": "Bienvenido a Roo Code",
+	"greeting": "Bienvenido a Ponder",
 	"task": {
 		"title": "Tarea",
 		"seeMore": "Ver más",
@@ -18,7 +18,7 @@
 		"sharePublicly": "Compartir públicamente",
 		"sharePubliclyDescription": "Cualquiera con el enlace puede acceder",
 		"connectToCloud": "Conectar al Cloud",
-		"connectToCloudDescription": "Inicia sesión en Roo Code Cloud para compartir tareas",
+		"connectToCloudDescription": "Inicia sesión en Ponder Cloud para compartir tareas",
 		"sharingDisabledByOrganization": "Compartir deshabilitado por la organización",
 		"shareSuccessOrganization": "Enlace de organización copiado al portapapeles",
 		"shareSuccessPublic": "Enlace público copiado al portapapeles"
@@ -116,7 +116,7 @@
 		"title": "Modos",
 		"marketplace": "Marketplace de Modos",
 		"settings": "Configuración de Modos",
-		"description": "Personalidades especializadas que adaptan el comportamiento de Roo.",
+		"description": "Personalidades especializadas que adaptan el comportamiento de Ponder.",
 		"searchPlaceholder": "Buscar modos...",
 		"noResults": "No se encontraron resultados"
 	},
@@ -130,7 +130,7 @@
 	"diffError": {
 		"title": "Edición fallida"
 	},
-	"troubleMessage": "Roo está teniendo problemas...",
+	"troubleMessage": "Ponder está teniendo problemas...",
 	"apiRequest": {
 		"title": "Solicitud API",
 		"failed": "Solicitud API falló",

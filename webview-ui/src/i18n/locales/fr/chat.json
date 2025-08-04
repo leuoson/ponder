@@ -1,5 +1,5 @@
 {
-	"greeting": "Bienvenue sur Roo Code",
+	"greeting": "Bienvenue sur Ponder",
 	"task": {
 		"title": "Tâche",
 		"seeMore": "Voir plus",
@@ -18,7 +18,7 @@
 		"sharePublicly": "Partager publiquement",
 		"sharePubliclyDescription": "Toute personne avec le lien peut accéder",
 		"connectToCloud": "Se connecter au Cloud",
-		"connectToCloudDescription": "Connecte-toi à Roo Code Cloud pour partager des tâches",
+		"connectToCloudDescription": "Connecte-toi à Ponder Cloud pour partager des tâches",
 		"sharingDisabledByOrganization": "Partage désactivé par l'organisation",
 		"shareSuccessOrganization": "Lien d'organisation copié dans le presse-papiers",
 		"shareSuccessPublic": "Lien public copié dans le presse-papiers"
@@ -116,7 +116,7 @@
 		"title": "Modes",
 		"marketplace": "Marketplace de Modes",
 		"settings": "Paramètres des Modes",
-		"description": "Personas spécialisés qui adaptent le comportement de Roo.",
+		"description": "Personas spécialisés qui adaptent le comportement de Ponder.",
 		"searchPlaceholder": "Rechercher des modes...",
 		"noResults": "Aucun résultat trouvé"
 	},
@@ -130,7 +130,7 @@
 	"diffError": {
 		"title": "Modification échouée"
 	},
-	"troubleMessage": "Roo rencontre des difficultés...",
+	"troubleMessage": "Ponder rencontre des difficultés...",
 	"apiRequest": {
 		"title": "Requête API",
 		"failed": "Échec de la requête API",
@@ -272,7 +272,7 @@
 		"detailsDiscussLinks": "Obtenez plus de détails et participez aux discussions sur <discordLink>Discord</discordLink> et <redditLink>Reddit</redditLink> 🚀"
 	},
 	"browser": {
-		"rooWantsToUse": "Roo veut utiliser le navigateur :",
+		"rooWantsToUse": "Ponder veut utiliser le navigateur :",
 		"consoleLogs": "Journaux de console",
 		"noNewLogs": "(Pas de nouveaux journaux)",
 		"screenshot": "Capture d'écran du navigateur",
