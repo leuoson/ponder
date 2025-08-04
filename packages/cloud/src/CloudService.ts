@@ -92,8 +92,10 @@ export class CloudService extends EventEmitter<CloudServiceEvents> implements vs
 
 			try {
 				TelemetryService.instance.register(this.telemetryClient)
+				this.log("[CloudService] Cloud TelemetryClient registered successfully")
 			} catch (error) {
 				this.log("[CloudService] Failed to register TelemetryClient:", error)
+				// Continue without cloud telemetry - this is not a critical failure
 			}
 
 			this.isInitialized = true

@@ -71,7 +71,9 @@ export class TelemetryClient extends BaseTelemetryClient {
 
 		if (!result.success) {
 			console.error(
-				`[TelemetryClient#capture] Invalid telemetry event: ${result.error.message} - ${JSON.stringify(payload)}`,
+				`[TelemetryClient#capture] Invalid telemetry event:`,
+				result.error.issues,
+				`- ${JSON.stringify(payload)}`,
 			)
 
 			return

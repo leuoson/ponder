@@ -67,8 +67,13 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	try {
 		telemetryService.register(new PostHogTelemetryClient())
+		outputChannel.appendLine("PostHog telemetry client registered successfully")
 	} catch (error) {
 		console.warn("Failed to register PostHogTelemetryClient:", error)
+		outputChannel.appendLine(
+			`PostHog telemetry disabled: ${error instanceof Error ? error.message : "Unknown error"}`,
+		)
+		// Continue without telemetry - this is not a critical failure
 	}
 
 	// Create logger for cloud services
@@ -105,6 +110,10 @@ export async function activate(context: vscode.ExtensionContext) {
 	const contextProxy = await ContextProxy.getInstance(context)
 	const codeIndexManager = CodeIndexManager.getInstance(context)
 
+	// Create provider first to ensure telemetry has access to properties
+	const provider = new ClineProvider(context, outputChannel, "sidebar", contextProxy, codeIndexManager, mdmService)
+	TelemetryService.instance.setProvider(provider)
+
 	try {
 		await codeIndexManager?.initialize(contextProxy)
 	} catch (error) {
@@ -112,9 +121,6 @@ export async function activate(context: vscode.ExtensionContext) {
 			`[CodeIndexManager] Error during background CodeIndexManager configuration/indexing: ${error.message || error}`,
 		)
 	}
-
-	const provider = new ClineProvider(context, outputChannel, "sidebar", contextProxy, codeIndexManager, mdmService)
-	TelemetryService.instance.setProvider(provider)
 
 	if (codeIndexManager) {
 		context.subscriptions.push(codeIndexManager)
