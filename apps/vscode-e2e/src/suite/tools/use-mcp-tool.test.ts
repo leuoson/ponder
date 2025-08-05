@@ -30,7 +30,7 @@ suite.skip("Roo Code use_mcp_tool Tool", function () {
 		testFiles = {
 			simple: path.join(workspaceDir, `mcp-test-${Date.now()}.txt`),
 			testData: path.join(workspaceDir, `mcp-data-${Date.now()}.json`),
-			mcpConfig: path.join(workspaceDir, ".roo", "mcp.json"),
+			mcpConfig: path.join(workspaceDir, ".ponder", "mcp.json"),
 		}
 
 		// Create initial test files
@@ -38,7 +38,7 @@ suite.skip("Roo Code use_mcp_tool Tool", function () {
 		await fs.writeFile(testFiles.testData, JSON.stringify({ test: "data", value: 42 }, null, 2))
 
 		// Create .roo directory and MCP configuration file
-		const rooDir = path.join(workspaceDir, ".roo")
+		const rooDir = path.join(workspaceDir, ".ponder")
 		await fs.mkdir(rooDir, { recursive: true })
 
 		const mcpConfig = {
@@ -76,7 +76,7 @@ suite.skip("Roo Code use_mcp_tool Tool", function () {
 
 		// Clean up .roo directory
 		const workspaceDir = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || tempDir
-		const rooDir = path.join(workspaceDir, ".roo")
+		const rooDir = path.join(workspaceDir, ".ponder")
 		try {
 			await fs.rm(rooDir, { recursive: true, force: true })
 		} catch {
@@ -515,7 +515,7 @@ suite.skip("Roo Code use_mcp_tool Tool", function () {
 				responseText.includes("mcp-test-") || responseText.includes(path.basename(testFiles.simple))
 			const hasDataFile =
 				responseText.includes("mcp-data-") || responseText.includes(path.basename(testFiles.testData))
-			const hasRooDir = responseText.includes(".roo")
+			const hasRooDir = responseText.includes(".ponder")
 
 			// At least one of our test files or the .roo directory should be present
 			assert.ok(

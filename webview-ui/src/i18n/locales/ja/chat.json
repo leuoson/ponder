@@ -1,4 +1,4 @@
-{
+﻿{
 	"greeting": "Ponder へようこそ",
 	"task": {
 		"title": "タスク",
@@ -130,7 +130,7 @@
 	"diffError": {
 		"title": "編集に失敗しました"
 	},
-	"troubleMessage": "Rooに問題が発生しています...",
+	"troubleMessage": "Ponderに問題が発生しています...",
 	"apiRequest": {
 		"title": "APIリクエスト",
 		"failed": "APIリクエスト失敗",
@@ -156,42 +156,42 @@
 		"current": "現在"
 	},
 	"instructions": {
-		"wantsToFetch": "Rooは現在のタスクを支援するための詳細な指示を取得したい"
+		"wantsToFetch": "Ponderは現在のタスクを支援するための詳細な指示を取得したい"
 	},
 	"fileOperations": {
-		"wantsToRead": "Rooはこのファイルを読みたい:",
-		"wantsToReadOutsideWorkspace": "Rooはワークスペース外のこのファイルを読みたい:",
-		"didRead": "Rooはこのファイルを読みました:",
-		"wantsToEdit": "Rooはこのファイルを編集したい:",
-		"wantsToEditOutsideWorkspace": "Rooはワークスペース外のこのファイルを編集したい:",
-		"wantsToEditProtected": "Rooは保護された設定ファイルを編集したい:",
-		"wantsToCreate": "Rooは新しいファイルを作成したい:",
-		"wantsToSearchReplace": "Rooはこのファイルで検索と置換を行う:",
-		"didSearchReplace": "Rooはこのファイルで検索と置換を実行しました:",
-		"wantsToInsert": "Rooはこのファイルにコンテンツを挿入したい:",
-		"wantsToInsertWithLineNumber": "Rooはこのファイルの{{lineNumber}}行目にコンテンツを挿入したい:",
-		"wantsToInsertAtEnd": "Rooはこのファイルの末尾にコンテンツを追加したい:",
-		"wantsToReadAndXMore": "Roo はこのファイルと他に {{count}} 個のファイルを読み込もうとしています:",
-		"wantsToReadMultiple": "Rooは複数のファイルを読み取ろうとしています：",
-		"wantsToApplyBatchChanges": "Rooは複数のファイルに変更を適用したい:"
+		"wantsToRead": "Ponderはこのファイルを読みたい:",
+		"wantsToReadOutsideWorkspace": "Ponderはワークスペース外のこのファイルを読みたい:",
+		"didRead": "Ponderはこのファイルを読みました:",
+		"wantsToEdit": "Ponderはこのファイルを編集したい:",
+		"wantsToEditOutsideWorkspace": "Ponderはワークスペース外のこのファイルを編集したい:",
+		"wantsToEditProtected": "Ponderは保護された設定ファイルを編集したい:",
+		"wantsToCreate": "Ponderは新しいファイルを作成したい:",
+		"wantsToSearchReplace": "Ponderはこのファイルで検索と置換を行う:",
+		"didSearchReplace": "Ponderはこのファイルで検索と置換を実行しました:",
+		"wantsToInsert": "Ponderはこのファイルにコンテンツを挿入したい:",
+		"wantsToInsertWithLineNumber": "Ponderはこのファイルの{{lineNumber}}行目にコンテンツを挿入したい:",
+		"wantsToInsertAtEnd": "Ponderはこのファイルの末尾にコンテンツを追加したい:",
+		"wantsToReadAndXMore": "Ponder はこのファイルと他に {{count}} 個のファイルを読み込もうとしています:",
+		"wantsToReadMultiple": "Ponderは複数のファイルを読み取ろうとしています：",
+		"wantsToApplyBatchChanges": "Ponderは複数のファイルに変更を適用したい:"
 	},
 	"directoryOperations": {
-		"wantsToViewTopLevel": "Rooはこのディレクトリのトップレベルファイルを表示したい:",
-		"didViewTopLevel": "Rooはこのディレクトリのトップレベルファイルを表示しました:",
-		"wantsToViewRecursive": "Rooはこのディレクトリのすべてのファイルを再帰的に表示したい:",
-		"didViewRecursive": "Rooはこのディレクトリのすべてのファイルを再帰的に表示しました:",
-		"wantsToViewDefinitions": "Rooはこのディレクトリで使用されているソースコード定義名を表示したい:",
-		"didViewDefinitions": "Rooはこのディレクトリで使用されているソースコード定義名を表示しました:",
-		"wantsToSearch": "Rooはこのディレクトリで <code>{{regex}}</code> を検索したい:",
-		"didSearch": "Rooはこのディレクトリで <code>{{regex}}</code> を検索しました:",
-		"wantsToSearchOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）で <code>{{regex}}</code> を検索したい:",
-		"didSearchOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）で <code>{{regex}}</code> を検索しました:",
-		"wantsToViewTopLevelOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）のトップレベルファイルを表示したい:",
-		"didViewTopLevelOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）のトップレベルファイルを表示しました:",
-		"wantsToViewRecursiveOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）のすべてのファイルを再帰的に表示したい:",
-		"didViewRecursiveOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）のすべてのファイルを再帰的に表示しました:",
-		"wantsToViewDefinitionsOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）で使用されているソースコード定義名を表示したい:",
-		"didViewDefinitionsOutsideWorkspace": "Rooはこのディレクトリ（ワークスペース外）で使用されているソースコード定義名を表示しました:"
+		"wantsToViewTopLevel": "Ponderはこのディレクトリのトップレベルファイルを表示したい:",
+		"didViewTopLevel": "Ponderはこのディレクトリのトップレベルファイルを表示しました:",
+		"wantsToViewRecursive": "Ponderはこのディレクトリのすべてのファイルを再帰的に表示したい:",
+		"didViewRecursive": "Ponderはこのディレクトリのすべてのファイルを再帰的に表示しました:",
+		"wantsToViewDefinitions": "Ponderはこのディレクトリで使用されているソースコード定義名を表示したい:",
+		"didViewDefinitions": "Ponderはこのディレクトリで使用されているソースコード定義名を表示しました:",
+		"wantsToSearch": "Ponderはこのディレクトリで <code>{{regex}}</code> を検索したい:",
+		"didSearch": "Ponderはこのディレクトリで <code>{{regex}}</code> を検索しました:",
+		"wantsToSearchOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）で <code>{{regex}}</code> を検索したい:",
+		"didSearchOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）で <code>{{regex}}</code> を検索しました:",
+		"wantsToViewTopLevelOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）のトップレベルファイルを表示したい:",
+		"didViewTopLevelOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）のトップレベルファイルを表示しました:",
+		"wantsToViewRecursiveOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）のすべてのファイルを再帰的に表示したい:",
+		"didViewRecursiveOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）のすべてのファイルを再帰的に表示しました:",
+		"wantsToViewDefinitionsOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）で使用されているソースコード定義名を表示したい:",
+		"didViewDefinitionsOutsideWorkspace": "Ponderはこのディレクトリ（ワークスペース外）で使用されているソースコード定義名を表示しました:"
 	},
 	"commandOutput": "コマンド出力",
 	"commandExecution": {
@@ -213,18 +213,18 @@
 	"response": "応答",
 	"arguments": "引数",
 	"mcp": {
-		"wantsToUseTool": "RooはMCPサーバー{{serverName}}でツールを使用したい:",
-		"wantsToAccessResource": "RooはMCPサーバー{{serverName}}のリソースにアクセスしたい:"
+		"wantsToUseTool": "PonderはMCPサーバー{{serverName}}でツールを使用したい:",
+		"wantsToAccessResource": "PonderはMCPサーバー{{serverName}}のリソースにアクセスしたい:"
 	},
 	"modes": {
-		"wantsToSwitch": "Rooは<code>{{mode}}</code>モードに切り替えたい",
-		"wantsToSwitchWithReason": "Rooは次の理由で<code>{{mode}}</code>モードに切り替えたい: {{reason}}",
-		"didSwitch": "Rooは<code>{{mode}}</code>モードに切り替えました",
-		"didSwitchWithReason": "Rooは次の理由で<code>{{mode}}</code>モードに切り替えました: {{reason}}"
+		"wantsToSwitch": "Ponderは<code>{{mode}}</code>モードに切り替えたい",
+		"wantsToSwitchWithReason": "Ponderは次の理由で<code>{{mode}}</code>モードに切り替えたい: {{reason}}",
+		"didSwitch": "Ponderは<code>{{mode}}</code>モードに切り替えました",
+		"didSwitchWithReason": "Ponderは次の理由で<code>{{mode}}</code>モードに切り替えました: {{reason}}"
 	},
 	"subtasks": {
-		"wantsToCreate": "Rooは<code>{{mode}}</code>モードで新しいサブタスクを作成したい:",
-		"wantsToFinish": "Rooはこのサブタスクを終了したい",
+		"wantsToCreate": "Ponderは<code>{{mode}}</code>モードで新しいサブタスクを作成したい:",
+		"wantsToFinish": "Ponderはこのサブタスクを終了したい",
 		"newTaskContent": "サブタスク指示",
 		"completionContent": "サブタスク完了",
 		"resultContent": "サブタスク結果",
@@ -232,7 +232,7 @@
 		"completionInstructions": "サブタスク完了！結果を確認し、修正や次のステップを提案できます。問題なければ、親タスクに結果を返すために確認してください。"
 	},
 	"questions": {
-		"hasQuestion": "Rooは質問があります:"
+		"hasQuestion": "Ponderは質問があります:"
 	},
 	"taskCompleted": "タスク完了",
 	"powershell": {
@@ -241,7 +241,7 @@
 	"autoApprove": {
 		"title": "自動承認:",
 		"none": "なし",
-		"description": "自動承認はRoo Codeに許可を求めずに操作を実行する権限を与えます。完全に信頼できる操作のみ有効にしてください。より詳細な設定は<settingsLink>設定</settingsLink>で利用できます。",
+		"description": "自動承認はPonderに許可を求めずに操作を実行する権限を与えます。完全に信頼できる操作のみ有効にしてください。より詳細な設定は<settingsLink>設定</settingsLink>で利用できます。",
 		"selectOptionsFirst": "自動承認を有効にするには、以下のオプションを少なくとも1つ選択してください",
 		"toggleAriaLabel": "自動承認の切り替え",
 		"disabledAriaLabel": "自動承認が無効です - 最初にオプションを選択してください"
@@ -262,17 +262,17 @@
 		"countdownDisplay": "{{count}}秒"
 	},
 	"announcement": {
-		"title": "🎉 Roo Code {{version}} リリース",
-		"description": "Roo Code {{version}}は、開発ワークフローを向上させる強力な新機能と重要な改善をもたらします。",
+		"title": "🎉 Ponder {{version}} リリース",
+		"description": "Ponder {{version}}は、開発ワークフローを向上させる強力な新機能と重要な改善をもたらします。",
 		"whatsNew": "新機能",
-		"feature1": "<bold>メッセージキュー</bold>: Rooが作業中に複数のメッセージをキューに入れ、ワークフローの計画を中断することなく続行できます。",
+		"feature1": "<bold>メッセージキュー</bold>: Ponderが作業中に複数のメッセージをキューに入れ、ワークフローの計画を中断することなく続行できます。",
 		"feature2": "<bold>カスタムスラッシュコマンド</bold>: よく使用するプロンプトやワークフローへの迅速なアクセスのために、パーソナライズされたスラッシュコマンドを作成し、完全なUI管理を提供します。",
 		"feature3": "<bold>強化されたGeminiツール</bold>: 新しいURLコンテキストとGoogle検索グラウンディング機能により、Geminiモデルにリアルタイムのウェブ情報と強化された研究能力を提供します。",
 		"hideButton": "通知を非表示",
 		"detailsDiscussLinks": "詳細は<discordLink>Discord</discordLink>と<redditLink>Reddit</redditLink>でご確認・ディスカッションください 🚀"
 	},
 	"browser": {
-		"rooWantsToUse": "Rooはブラウザを使用したい:",
+		"rooWantsToUse": "Ponderはブラウザを使用したい:",
 		"consoleLogs": "コンソールログ",
 		"noNewLogs": "(新しいログはありません)",
 		"screenshot": "ブラウザのスクリーンショット",
@@ -306,24 +306,24 @@
 	"profileViolationWarning": "現在のプロファイルは組織の設定と互換性がありません",
 	"shellIntegration": {
 		"title": "コマンド実行警告",
-		"description": "コマンドはVSCodeターミナルシェル統合なしで実行されています。この警告を非表示にするには、<settingsLink>Roo Code設定</settingsLink>の<strong>Terminal</strong>セクションでシェル統合を無効にするか、以下のリンクを使用してVSCodeターミナル統合のトラブルシューティングを行ってください。",
+		"description": "コマンドはVSCodeターミナルシェル統合なしで実行されています。この警告を非表示にするには、<settingsLink>Ponder設定</settingsLink>の<strong>Terminal</strong>セクションでシェル統合を無効にするか、以下のリンクを使用してVSCodeターミナル統合のトラブルシューティングを行ってください。",
 		"troubleshooting": "シェル統合のドキュメントはこちらをクリック"
 	},
 	"ask": {
 		"autoApprovedRequestLimitReached": {
 			"title": "自動承認リクエスト制限に達しました",
-			"description": "Rooは{{count}}件のAPI自動承認リクエスト制限に達しました。カウントをリセットしてタスクを続行しますか？",
+			"description": "Ponderは{{count}}件のAPI自動承認リクエスト制限に達しました。カウントをリセットしてタスクを続行しますか？",
 			"button": "リセットして続行"
 		},
 		"autoApprovedCostLimitReached": {
 			"title": "自動承認コスト制限に達しました",
-			"description": "Rooは自動承認されたコスト制限の${{count}}に達しました。コストをリセットしてタスクを続行しますか？",
+			"description": "Ponderは自動承認されたコスト制限の${{count}}に達しました。コストをリセットしてタスクを続行しますか？",
 			"button": "リセットして続ける"
 		}
 	},
 	"codebaseSearch": {
-		"wantsToSearch": "Rooはコードベースで <code>{{query}}</code> を検索したい:",
-		"wantsToSearchWithPath": "Rooは <code>{{path}}</code> 内のコードベースで <code>{{query}}</code> を検索したい:",
+		"wantsToSearch": "Ponderはコードベースで <code>{{query}}</code> を検索したい:",
+		"wantsToSearchWithPath": "Ponderは <code>{{path}}</code> 内のコードベースで <code>{{query}}</code> を検索したい:",
 		"didSearch_one": "1件の結果が見つかりました",
 		"didSearch_other": "{{count}}件の結果が見つかりました",
 		"resultTooltip": "類似度スコア: {{score}} (クリックしてファイルを開く)"
@@ -347,7 +347,7 @@
 		"ariaLabel": "バージョン {{version}} - クリックしてリリースノートを表示"
 	},
 	"rooCloudCTA": {
-		"title": "Roo Code Cloud が間もなく登場！",
+		"title": "Ponder Cloud が間もなく登場！",
 		"description": "クラウドでリモートエージェントを実行し、どこからでもタスクにアクセスし、他の人と協力し、その他多くの機能を利用できます。",
 		"joinWaitlist": "早期アクセスを取得するためにウェイトリストに参加してください。"
 	},

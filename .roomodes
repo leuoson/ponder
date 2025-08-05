@@ -105,7 +105,7 @@ customModes:
     groups:
       - read
       - - edit
-        - fileRegex: (DOCS-TEMP-.*\.md$|\.roo/docs-extractor/.*\.md$)
+        - fileRegex: (DOCS-TEMP-.*\.md$|\.ponder/docs-extractor/.*\.md$)
           description: Temporary documentation extraction files only
       - command
       - mcp
@@ -246,7 +246,7 @@ customModes:
     groups:
       - read
       - - edit
-        - fileRegex: (\.roomodes$|\.roo/.*\.xml$|\.yaml$)
+        - fileRegex: (\.roomodes$|\.ponder/.*\.xml$|\.yaml$)
           description: Mode configuration files and XML instructions
       - command
       - mcp
