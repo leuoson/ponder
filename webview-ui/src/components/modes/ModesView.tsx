@@ -27,6 +27,7 @@ import { vscode } from "@src/utils/vscode"
 import { buildDocLink } from "@src/utils/docLinks"
 import { useAppTranslation } from "@src/i18n/TranslationContext"
 import { useExtensionState } from "@src/context/ExtensionStateContext"
+import { applyModesLocalization } from "@src/utils/modeLocalization"
 import { Tab, TabContent, TabHeader } from "@src/components/common/Tab"
 import {
 	Button,
@@ -75,6 +76,7 @@ const ModesView = ({ onDone }: ModesViewProps) => {
 		customInstructions,
 		setCustomInstructions,
 		customModes,
+		language,
 	} = useExtensionState()
 
 	// Use a local state to track the visually active mode
@@ -84,8 +86,13 @@ const ModesView = ({ onDone }: ModesViewProps) => {
 	// 3. Still sending the mode change to the backend for persistence
 	const [visualMode, setVisualMode] = useState(mode)
 
-	// Memoize modes to preserve array order
-	const modes = useMemo(() => getAllModes(customModes), [customModes])
+	// Memoize modes with localization applied to preserve array order
+	const modes = useMemo(() => {
+		const allModes = getAllModes(customModes)
+		// Apply localization to all modes using Ponder's language setting
+		// Only apply localization if language is available
+		return language ? applyModesLocalization(allModes, language) : allModes
+	}, [customModes, language])
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false)
 	const [selectedPromptContent, setSelectedPromptContent] = useState("")

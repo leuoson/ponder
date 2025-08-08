@@ -4,14 +4,14 @@ import { promises as fs } from "fs"
 
 import type { ModeConfig } from "@roo-code/types"
 
-import { getAllModesWithPrompts } from "../../../shared/modes"
+import { getAllModesWithLocalization } from "../../../shared/modes"
 
-export async function getModesSection(context: vscode.ExtensionContext): Promise<string> {
+export async function getModesSection(context: vscode.ExtensionContext, currentLocale?: string): Promise<string> {
 	const settingsDir = path.join(context.globalStorageUri.fsPath, "settings")
 	await fs.mkdir(settingsDir, { recursive: true })
 
-	// Get all modes with their overrides from extension state
-	const allModes = await getAllModesWithPrompts(context)
+	// Get all modes with their overrides and localization from extension state
+	const allModes = await getAllModesWithLocalization(context, currentLocale)
 
 	let modesContent = `====
 

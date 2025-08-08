@@ -12,6 +12,7 @@ import { ModeConfig, CustomModePrompts } from "@roo-code/types"
 import { telemetryClient } from "@/utils/TelemetryClient"
 import { TelemetryEventName } from "@roo-code/types"
 import { Fzf } from "fzf"
+import { applyModesLocalization } from "@/utils/modeLocalization"
 
 // Minimum number of modes required to show search functionality
 const SEARCH_THRESHOLD = 6
@@ -43,7 +44,7 @@ export const ModeSelector = ({
 	const [searchValue, setSearchValue] = React.useState("")
 	const searchInputRef = React.useRef<HTMLInputElement>(null)
 	const portalContainer = useRooPortal("roo-portal")
-	const { hasOpenedModeSelector, setHasOpenedModeSelector } = useExtensionState()
+	const { hasOpenedModeSelector, setHasOpenedModeSelector, language } = useExtensionState()
 	const { t } = useAppTranslation()
 
 	const trackModeSelectorOpened = React.useCallback(() => {
@@ -57,14 +58,20 @@ export const ModeSelector = ({
 		}
 	}, [hasOpenedModeSelector, setHasOpenedModeSelector])
 
-	// Get all modes including custom modes and merge custom prompt descriptions
+	// Get all modes including custom modes, apply localization, and merge custom prompt descriptions
 	const modes = React.useMemo(() => {
 		const allModes = getAllModes(customModes)
-		return allModes.map((mode) => ({
+
+		// First apply custom prompt descriptions to base modes
+		const modesWithCustomPrompts = allModes.map((mode) => ({
 			...mode,
 			description: customModePrompts?.[mode.slug]?.description ?? mode.description,
 		}))
-	}, [customModes, customModePrompts])
+
+		// Then apply localization (which should take precedence over default custom prompts)
+		// Only apply localization if language is available
+		return language ? applyModesLocalization(modesWithCustomPrompts, language) : modesWithCustomPrompts
+	}, [customModes, customModePrompts, language])
 
 	// Find the selected mode
 	const selectedMode = React.useMemo(() => modes.find((mode) => mode.slug === value), [modes, value])

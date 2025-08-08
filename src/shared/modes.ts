@@ -298,6 +298,35 @@ export async function getAllModesWithPrompts(context: vscode.ExtensionContext): 
 	}))
 }
 
+/**
+ * Enhanced function to get all modes with prompt overrides AND localization applied
+ *
+ * This function extends getAllModesWithPrompts to also apply localization based on
+ * the current locale. It maintains the existing precedence order:
+ * 1. Custom Mode Overrides (highest priority)
+ * 2. Prompt Component Overrides
+ * 3. Localization (applied to base mode values)
+ * 4. Default Mode Values (lowest priority)
+ *
+ * @param context - VSCode extension context
+ * @param currentLocale - Current locale for localization (e.g., 'zh-CN', 'en-US')
+ * @returns Promise resolving to modes with all overrides and localization applied
+ */
+export async function getAllModesWithLocalization(
+	context: vscode.ExtensionContext,
+	currentLocale?: string,
+): Promise<ModeConfig[]> {
+	// Get modes with existing prompt overrides
+	const modesWithPrompts = await getAllModesWithPrompts(context)
+
+	// Apply localization if locale is provided
+	if (currentLocale) {
+		return applyModesLocalization(modesWithPrompts, currentLocale)
+	}
+
+	return modesWithPrompts
+}
+
 // Helper function to get complete mode details with all overrides
 export async function getFullModeDetails(
 	modeSlug: string,
@@ -380,4 +409,45 @@ export function getCustomInstructions(modeSlug: string, customModes?: ModeConfig
 		return ""
 	}
 	return mode.customInstructions ?? ""
+}
+
+/**
+ * Applies localization to a mode configuration based on current locale
+ *
+ * This function checks if the mode has i18n configuration for the current locale
+ * and applies the localized values, falling back to default values if not available.
+ *
+ * @param mode - The mode configuration to localize
+ * @param currentLocale - The current locale (e.g., 'zh-CN', 'en-US')
+ * @returns Mode configuration with localized values applied
+ */
+export function applyModeLocalization(mode: ModeConfig, currentLocale: string): ModeConfig {
+	// If no i18n configuration exists, return the original mode
+	if (!mode.i18n || !mode.i18n[currentLocale]) {
+		return mode
+	}
+
+	const localizedData = mode.i18n[currentLocale]
+
+	return {
+		...mode,
+		// Apply localized values if they exist, otherwise keep original values
+		name: localizedData.name ?? mode.name,
+		description: localizedData.description ?? mode.description,
+		// Future extensible fields can be added here:
+		// roleDefinition: localizedData.roleDefinition ?? mode.roleDefinition,
+		// whenToUse: localizedData.whenToUse ?? mode.whenToUse,
+		// customInstructions: localizedData.customInstructions ?? mode.customInstructions,
+	}
+}
+
+/**
+ * Applies localization to an array of modes
+ *
+ * @param modes - Array of mode configurations to localize
+ * @param currentLocale - The current locale
+ * @returns Array of localized mode configurations
+ */
+export function applyModesLocalization(modes: ModeConfig[], currentLocale: string): ModeConfig[] {
+	return modes.map((mode) => applyModeLocalization(mode, currentLocale))
 }
