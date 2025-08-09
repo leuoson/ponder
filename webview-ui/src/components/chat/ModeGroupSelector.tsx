@@ -20,10 +20,11 @@ export const ModeGroupSelector: React.FC<ModeGroupSelectorProps> = ({
 	value,
 	onChange,
 	disabled = false,
-	title = "",
+	title: _title = "",
 	triggerClassName = "",
 }) => {
 	const [open, setOpen] = React.useState(false)
+	const [optimisticValue, setOptimisticValue] = React.useState<string | undefined>(undefined)
 	const portalContainer = useRooPortal("roo-portal")
 	const { language } = useExtensionState()
 	const { t } = useAppTranslation()
@@ -33,12 +34,26 @@ export const ModeGroupSelector: React.FC<ModeGroupSelectorProps> = ({
 		return groups.slice().sort((a, b) => a.name.localeCompare(b.name))
 	}, [language])
 
-	const allLabel = t("chat:modeGroupSelector.all", { defaultValue: "All Groups" })
-
 	const selectedName = React.useMemo(() => {
-		if (!value) return allLabel
-		return localizedGroups.find((g) => g.id === value)?.name || allLabel
-	}, [value, localizedGroups, allLabel])
+		// Use optimistic value if available, otherwise fall back to actual value
+		const currentValue = optimisticValue !== undefined ? optimisticValue : value
+
+		if (!currentValue) {
+			// Default to first group if no selection
+			return localizedGroups[0]?.name || ""
+		}
+		return localizedGroups.find((g) => g.id === currentValue)?.name || localizedGroups[0]?.name || ""
+	}, [optimisticValue, value, localizedGroups])
+
+	// Clear optimistic value when actual value updates to match it
+	React.useEffect(() => {
+		if (optimisticValue !== undefined && value === optimisticValue) {
+			setOptimisticValue(undefined)
+		}
+	}, [value, optimisticValue])
+
+	// Get the current effective value (optimistic or actual)
+	const currentValue = optimisticValue !== undefined ? optimisticValue : value
 
 	const trigger = (
 		<PopoverTrigger
@@ -59,40 +74,26 @@ export const ModeGroupSelector: React.FC<ModeGroupSelectorProps> = ({
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			{title ? <StandardTooltip content={title}>{trigger}</StandardTooltip> : trigger}
+			<StandardTooltip content={t("chat:modeGroupSelector.tooltip")}>{trigger}</StandardTooltip>
 			<PopoverContent
 				align="start"
 				sideOffset={4}
 				container={portalContainer}
 				className="p-0 overflow-hidden min-w-60">
 				<div className="max-h-[300px] overflow-y-auto py-1">
-					<div
-						onClick={() => {
-							onChange(undefined)
-							setOpen(false)
-						}}
-						className={cn(
-							"px-3 py-1.5 text-sm cursor-pointer flex items-center hover:bg-vscode-list-hoverBackground",
-							!value
-								? "bg-vscode-list-activeSelectionBackground text-vscode-list-activeSelectionForeground"
-								: "",
-						)}>
-						<div className="flex-1 min-w-0">
-							<div className="font-bold truncate">{allLabel}</div>
-						</div>
-						{!value && <Check className="ml-auto size-4 p-0.5" />}
-					</div>
 					{localizedGroups.map((group) => (
 						<div
 							key={group.id}
 							onClick={() => {
+								// Set optimistic value immediately for UI responsiveness
+								setOptimisticValue(group.id)
 								onChange(group.id)
 								setOpen(false)
 							}}
 							className={cn(
 								"px-3 py-1.5 text-sm cursor-pointer flex items-center",
 								"hover:bg-vscode-list-hoverBackground",
-								value === group.id
+								currentValue === group.id
 									? "bg-vscode-list-activeSelectionBackground text-vscode-list-activeSelectionForeground"
 									: "",
 							)}>
@@ -104,7 +105,7 @@ export const ModeGroupSelector: React.FC<ModeGroupSelectorProps> = ({
 									</div>
 								)}
 							</div>
-							{value === group.id && <Check className="ml-auto size-4 p-0.5" />}
+							{currentValue === group.id && <Check className="ml-auto size-4 p-0.5" />}
 						</div>
 					))}
 				</div>

@@ -120,6 +120,11 @@
 		"searchPlaceholder": "Modi suchen...",
 		"noResults": "Keine Ergebnisse gefunden"
 	},
+	"modeGroupSelector": {
+		"title": "Modus-Gruppen",
+		"all": "Alle Gruppen",
+		"tooltip": "Wählen Sie einen Fachbereich"
+	},
 	"errorReadingFile": "Fehler beim Lesen der Datei:",
 	"noValidImages": "Keine gültigen Bilder wurden verarbeitet",
 	"separator": "Trennlinie",

@@ -1159,6 +1159,10 @@ export const webviewMessageHandler = async (
 		case "mode":
 			await provider.handleModeSwitch(message.text as Mode)
 			break
+		case "selectedModeGroup":
+			await updateGlobalState("selectedModeGroup", message.text as string | undefined)
+			await provider.postStateToWebview()
+			break
 		case "updateSupportPrompt":
 			try {
 				if (!message?.values) {

@@ -120,6 +120,11 @@
 		"searchPlaceholder": "Pesquisar modos...",
 		"noResults": "Nenhum resultado encontrado"
 	},
+	"modeGroupSelector": {
+		"title": "Grupos de Modos",
+		"all": "Todos os Grupos",
+		"tooltip": "Selecione um domínio profissional"
+	},
 	"errorReadingFile": "Erro ao ler arquivo:",
 	"noValidImages": "Nenhuma imagem válida foi processada",
 	"separator": "Separador",

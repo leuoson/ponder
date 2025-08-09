@@ -120,6 +120,11 @@
 		"searchPlaceholder": "मोड खोजें...",
 		"noResults": "कोई परिणाम नहीं मिला"
 	},
+	"modeGroupSelector": {
+		"title": "मोड समूह",
+		"all": "सभी समूह",
+		"tooltip": "एक पेशेवर क्षेत्र चुनें"
+	},
 	"errorReadingFile": "फ़ाइल पढ़ने में त्रुटि:",
 	"noValidImages": "कोई मान्य चित्र प्रोसेस नहीं किया गया",
 	"separator": "विभाजक",

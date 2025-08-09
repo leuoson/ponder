@@ -120,6 +120,11 @@
 		"searchPlaceholder": "Cerca modes...",
 		"noResults": "No s'han trobat resultats"
 	},
+	"modeGroupSelector": {
+		"title": "Grups de Modes",
+		"all": "Tots els Grups",
+		"tooltip": "Seleccioneu un domini professional"
+	},
 	"errorReadingFile": "Error en llegir el fitxer:",
 	"noValidImages": "No s'ha processat cap imatge vàlida",
 	"separator": "Separador",

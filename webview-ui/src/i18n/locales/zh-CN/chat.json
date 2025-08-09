@@ -122,7 +122,8 @@
 	},
 	"modeGroupSelector": {
 		"title": "模式分组",
-		"all": "全部分组"
+		"all": "全部分组",
+		"tooltip": "请选择专业领域"
 	},
 	"errorReadingFile": "读取文件时出错:",
 	"noValidImages": "没有处理有效图片",

@@ -876,6 +876,7 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 		)
 
 		const [isTtsPlaying, setIsTtsPlaying] = useState(false)
+		const [optimisticModeGroup, setOptimisticModeGroup] = useState<string | undefined>(undefined)
 
 		useEvent("message", (event: MessageEvent) => {
 			const message: ExtensionMessage = event.data
@@ -898,34 +899,61 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 			[setMode],
 		)
 
-		// State for mode group selection
-		const [groupId, setGroupId] = React.useState<string | undefined>(undefined)
+		// Use persisted mode group selection from extension state
+		const { selectedModeGroup } = useExtensionState()
+
+		// Auto-select first group if no group is selected
+		React.useEffect(() => {
+			if (selectedModeGroup === undefined) {
+				// Import DEFAULT_MODE_GROUPS and get first group
+				import("@roo-code/types").then(({ DEFAULT_MODE_GROUPS }) => {
+					if (DEFAULT_MODE_GROUPS.length > 0) {
+						const firstGroupId = DEFAULT_MODE_GROUPS[0].id
+						vscode.postMessage({ type: "selectedModeGroup", text: firstGroupId })
+					}
+				})
+			}
+		}, [selectedModeGroup])
+
+		// Clear optimistic mode group when actual state updates to match it
+		React.useEffect(() => {
+			if (optimisticModeGroup !== undefined && selectedModeGroup === optimisticModeGroup) {
+				setOptimisticModeGroup(undefined)
+			}
+		}, [selectedModeGroup, optimisticModeGroup])
+
+		// Get the current effective mode group (optimistic or actual)
+		const currentModeGroup = optimisticModeGroup !== undefined ? optimisticModeGroup : selectedModeGroup
 
 		// Handle mode group change and auto-select first mode in the group
 		const handleGroupChange = useCallback(
 			(newGroupId?: string) => {
-				setGroupId(newGroupId)
+				// Since we no longer have "All Groups", newGroupId should always be defined
+				if (!newGroupId) return
+
+				// Set optimistic mode group immediately for UI responsiveness
+				setOptimisticModeGroup(newGroupId)
+
+				// Send mode group change to backend for persistence
+				vscode.postMessage({ type: "selectedModeGroup", text: newGroupId })
 
 				// Get the modes for the new group
-				const modesForGroup = newGroupId ? allModes.filter((m) => m.modeGroups?.includes(newGroupId)) : allModes
+				const modesForGroup = allModes.filter((m) => m.modeGroups?.includes(newGroupId))
 
-				// If there are modes in the group and current mode is not in the group, switch to first mode
+				// Always switch to the first mode in the new group
 				if (modesForGroup.length > 0) {
-					const currentModeInGroup = modesForGroup.find((m) => m.slug === mode)
-					if (!currentModeInGroup) {
-						const firstMode = modesForGroup[0]
-						handleModeChange(firstMode.slug)
-					}
+					const firstMode = modesForGroup[0]
+					handleModeChange(firstMode.slug)
 				}
 			},
-			[allModes, mode, handleModeChange],
+			[allModes, handleModeChange],
 		)
 
 		// Helper function to render mode selector with group selector
 		const renderModeSelector = () => (
 			<div className="flex items-center gap-1 w-full min-w-0">
 				<ModeGroupSelector
-					value={groupId}
+					value={selectedModeGroup}
 					onChange={handleGroupChange}
 					title={t("chat:modeGroupSelector.title", { defaultValue: "Mode Groups" })}
 				/>
@@ -938,7 +966,7 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 						modeShortcutText={modeShortcutText}
 						customModes={customModes}
 						customModePrompts={customModePrompts}
-						filterGroupId={groupId}
+						filterGroupId={currentModeGroup}
 					/>
 				</div>
 			</div>

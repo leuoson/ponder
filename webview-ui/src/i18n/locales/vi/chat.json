@@ -120,6 +120,11 @@
 		"searchPlaceholder": "Tìm kiếm chế độ...",
 		"noResults": "Không tìm thấy kết quả nào"
 	},
+	"modeGroupSelector": {
+		"title": "Nhóm Chế độ",
+		"all": "Tất cả Nhóm",
+		"tooltip": "Chọn một lĩnh vực chuyên môn"
+	},
 	"errorReadingFile": "Lỗi khi đọc tệp:",
 	"noValidImages": "Không có hình ảnh hợp lệ nào được xử lý",
 	"separator": "Dấu phân cách",

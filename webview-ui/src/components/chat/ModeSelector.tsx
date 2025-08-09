@@ -8,7 +8,7 @@ import { vscode } from "@/utils/vscode"
 import { useExtensionState } from "@/context/ExtensionStateContext"
 import { useAppTranslation } from "@/i18n/TranslationContext"
 import { Mode, getAllModes } from "@roo/modes"
-import { ModeConfig, CustomModePrompts } from "@roo-code/types"
+import { ModeConfig, CustomModePrompts, DEFAULT_MODE_GROUPS } from "@roo-code/types"
 import { telemetryClient } from "@/utils/TelemetryClient"
 import { TelemetryEventName } from "@roo-code/types"
 import { Fzf } from "fzf"
@@ -74,7 +74,13 @@ export const ModeSelector = ({
 		const localized = language ? applyModesLocalization(modesWithCustomPrompts, language) : modesWithCustomPrompts
 
 		// Finally apply group filter if provided
-		return filterGroupId ? localized.filter((m) => m.modeGroups?.includes(filterGroupId)) : localized
+		// If no filterGroupId is provided, use the first available group
+		if (!filterGroupId) {
+			// Get first group from DEFAULT_MODE_GROUPS
+			const firstGroupId = DEFAULT_MODE_GROUPS[0]?.id
+			return firstGroupId ? localized.filter((m) => m.modeGroups?.includes(firstGroupId)) : localized
+		}
+		return localized.filter((m) => m.modeGroups?.includes(filterGroupId))
 	}, [customModes, customModePrompts, language, filterGroupId])
 
 	// Find the selected mode

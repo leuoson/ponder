@@ -120,6 +120,11 @@
 		"searchPlaceholder": "Modları ara...",
 		"noResults": "Sonuç bulunamadı"
 	},
+	"modeGroupSelector": {
+		"title": "Mod Grupları",
+		"all": "Tüm Gruplar",
+		"tooltip": "Bir profesyonel alan seçin"
+	},
 	"errorReadingFile": "Dosya okuma hatası:",
 	"noValidImages": "Hiçbir geçerli resim işlenmedi",
 	"separator": "Ayırıcı",

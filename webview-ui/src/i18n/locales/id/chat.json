@@ -126,6 +126,11 @@
 		"searchPlaceholder": "Cari mode...",
 		"noResults": "Tidak ada hasil yang ditemukan"
 	},
+	"modeGroupSelector": {
+		"title": "Grup Mode",
+		"all": "Semua Grup",
+		"tooltip": "Pilih domain profesional"
+	},
 	"addImages": "Tambahkan gambar ke pesan",
 	"sendMessage": "Kirim pesan",
 	"stopTts": "Hentikan text-to-speech",

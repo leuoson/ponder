@@ -122,7 +122,8 @@
 	},
 	"modeGroupSelector": {
 		"title": "模式分組",
-		"all": "全部分組"
+		"all": "全部分組",
+		"tooltip": "請選擇專業領域"
 	},
 	"errorReadingFile": "讀取檔案時發生錯誤：",
 	"noValidImages": "未處理到任何有效圖片",

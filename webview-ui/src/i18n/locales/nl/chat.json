@@ -112,6 +112,11 @@
 		"searchPlaceholder": "Zoek modi...",
 		"noResults": "Geen resultaten gevonden"
 	},
+	"modeGroupSelector": {
+		"title": "Modus Groepen",
+		"all": "Alle Groepen",
+		"tooltip": "Selecteer een professioneel domein"
+	},
 	"addImages": "Afbeeldingen toevoegen aan bericht",
 	"sendMessage": "Bericht verzenden",
 	"stopTts": "Stop tekst-naar-spraak",

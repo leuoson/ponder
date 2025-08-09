@@ -120,6 +120,11 @@
 		"searchPlaceholder": "Szukaj trybów...",
 		"noResults": "Nie znaleziono wyników"
 	},
+	"modeGroupSelector": {
+		"title": "Grupy Trybów",
+		"all": "Wszystkie Grupy",
+		"tooltip": "Wybierz domenę zawodową"
+	},
 	"errorReadingFile": "Błąd odczytu pliku:",
 	"noValidImages": "Nie przetworzono żadnych prawidłowych obrazów",
 	"separator": "Separator",

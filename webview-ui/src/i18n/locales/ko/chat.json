@@ -120,6 +120,11 @@
 		"searchPlaceholder": "모드 검색...",
 		"noResults": "결과를 찾을 수 없습니다"
 	},
+	"modeGroupSelector": {
+		"title": "모드 그룹",
+		"all": "모든 그룹",
+		"tooltip": "전문 분야를 선택하세요"
+	},
 	"errorReadingFile": "파일 읽기 오류:",
 	"noValidImages": "처리된 유효한 이미지가 없습니다",
 	"separator": "구분자",
