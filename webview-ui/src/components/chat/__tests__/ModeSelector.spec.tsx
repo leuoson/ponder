@@ -199,4 +199,19 @@ describe("ModeSelector", () => {
 		const infoIcon = document.querySelector(".codicon-info")
 		expect(infoIcon).toBeInTheDocument()
 	})
+
+	test("filters by group when filterGroupId is provided", () => {
+		mockModes = [
+			{ slug: "a", name: "A", description: "", roleDefinition: "r", groups: ["read"], modeGroups: ["writing"] },
+			{ slug: "b", name: "B", description: "", roleDefinition: "r", groups: ["read"], modeGroups: ["business"] },
+		]
+		render(
+			<ModeSelector value={"a" as Mode} onChange={vi.fn()} modeShortcutText="Ctrl+M" filterGroupId="business" />,
+		)
+		// open popover
+		fireEvent.click(screen.getByTestId("mode-selector-trigger"))
+		const items = screen.getAllByTestId("mode-selector-item")
+		expect(items.length).toBe(1)
+		expect(items[0]).toHaveTextContent("B")
+	})
 })

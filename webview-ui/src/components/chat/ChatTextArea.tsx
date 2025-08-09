@@ -32,6 +32,7 @@ import { SlashCommandsPopover } from "./SlashCommandsPopover"
 import { cn } from "@/lib/utils"
 import { usePromptHistory } from "./hooks/usePromptHistory"
 import { EditModeControls } from "./EditModeControls"
+import ModeGroupSelector from "./ModeGroupSelector"
 
 interface ChatTextAreaProps {
 	inputValue: string
@@ -897,17 +898,50 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 			[setMode],
 		)
 
-		// Helper function to render mode selector
+		// State for mode group selection
+		const [groupId, setGroupId] = React.useState<string | undefined>(undefined)
+
+		// Handle mode group change and auto-select first mode in the group
+		const handleGroupChange = useCallback(
+			(newGroupId?: string) => {
+				setGroupId(newGroupId)
+
+				// Get the modes for the new group
+				const modesForGroup = newGroupId ? allModes.filter((m) => m.modeGroups?.includes(newGroupId)) : allModes
+
+				// If there are modes in the group and current mode is not in the group, switch to first mode
+				if (modesForGroup.length > 0) {
+					const currentModeInGroup = modesForGroup.find((m) => m.slug === mode)
+					if (!currentModeInGroup) {
+						const firstMode = modesForGroup[0]
+						handleModeChange(firstMode.slug)
+					}
+				}
+			},
+			[allModes, mode, handleModeChange],
+		)
+
+		// Helper function to render mode selector with group selector
 		const renderModeSelector = () => (
-			<ModeSelector
-				value={mode}
-				title={t("chat:selectMode")}
-				onChange={handleModeChange}
-				triggerClassName="w-full"
-				modeShortcutText={modeShortcutText}
-				customModes={customModes}
-				customModePrompts={customModePrompts}
-			/>
+			<div className="flex items-center gap-1 w-full min-w-0">
+				<ModeGroupSelector
+					value={groupId}
+					onChange={handleGroupChange}
+					title={t("chat:modeGroupSelector.title", { defaultValue: "Mode Groups" })}
+				/>
+				<div className="shrink-0">
+					<ModeSelector
+						value={mode}
+						title={t("chat:selectMode")}
+						onChange={handleModeChange}
+						triggerClassName="w-full"
+						modeShortcutText={modeShortcutText}
+						customModes={customModes}
+						customModePrompts={customModePrompts}
+						filterGroupId={groupId}
+					/>
+				</div>
+			</div>
 		)
 
 		// Helper function to handle API config change

@@ -27,6 +27,7 @@ interface ModeSelectorProps {
 	customModes?: ModeConfig[]
 	customModePrompts?: CustomModePrompts
 	disableSearch?: boolean
+	filterGroupId?: string // optional group filter (ModeGroup id)
 }
 
 export const ModeSelector = ({
@@ -39,6 +40,7 @@ export const ModeSelector = ({
 	customModes,
 	customModePrompts,
 	disableSearch = false,
+	filterGroupId,
 }: ModeSelectorProps) => {
 	const [open, setOpen] = React.useState(false)
 	const [searchValue, setSearchValue] = React.useState("")
@@ -69,9 +71,11 @@ export const ModeSelector = ({
 		}))
 
 		// Then apply localization (which should take precedence over default custom prompts)
-		// Only apply localization if language is available
-		return language ? applyModesLocalization(modesWithCustomPrompts, language) : modesWithCustomPrompts
-	}, [customModes, customModePrompts, language])
+		const localized = language ? applyModesLocalization(modesWithCustomPrompts, language) : modesWithCustomPrompts
+
+		// Finally apply group filter if provided
+		return filterGroupId ? localized.filter((m) => m.modeGroups?.includes(filterGroupId)) : localized
+	}, [customModes, customModePrompts, language, filterGroupId])
 
 	// Find the selected mode
 	const selectedMode = React.useMemo(() => modes.find((mode) => mode.slug === value), [modes, value])

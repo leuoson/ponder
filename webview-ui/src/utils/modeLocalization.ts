@@ -1,4 +1,4 @@
-import { ModeConfig } from "@roo-code/types"
+import { ModeConfig, ModeGroup } from "@roo-code/types"
 
 /**
  * Applies localization to a mode configuration based on current locale
@@ -66,4 +66,21 @@ export function getCurrentLocale(i18nLanguage: string): string {
 export function getLocalizedModes(modes: ModeConfig[], i18nLanguage: string): ModeConfig[] {
 	const currentLocale = getCurrentLocale(i18nLanguage)
 	return applyModesLocalization(modes, currentLocale)
+}
+
+/**
+ * Applies localization to a mode group configuration based on current locale
+ */
+export function applyModeGroupLocalization(group: ModeGroup, currentLocale: string): ModeGroup {
+	if (!group.i18n || !group.i18n[currentLocale]) return group
+	const localized = group.i18n[currentLocale]
+	return {
+		...group,
+		name: localized.name ?? group.name,
+		description: localized.description ?? group.description,
+	}
+}
+
+export function applyModeGroupsLocalization(groups: ModeGroup[], currentLocale: string): ModeGroup[] {
+	return groups.map((g) => applyModeGroupLocalization(g, currentLocale))
 }

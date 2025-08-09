@@ -4,7 +4,41 @@ import { Button, StandardTooltip } from "@/components/ui"
 import { Image, SendHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
 import ModeSelector from "./ModeSelector"
+import ModeGroupSelector from "./ModeGroupSelector"
 import { useAppTranslation } from "@/i18n/TranslationContext"
+
+const ModeGroupWithModeSelector: React.FC<{
+	mode: Mode
+	onModeChange: (value: Mode) => void
+	modeShortcutText: string
+	customModes: any
+	customModePrompts: any
+}> = ({ mode, onModeChange, modeShortcutText, customModes, customModePrompts }) => {
+	const { t } = useAppTranslation()
+	const [groupId, setGroupId] = React.useState<string | undefined>(undefined)
+
+	return (
+		<div className="flex items-center gap-1 w-full min-w-0">
+			<ModeGroupSelector
+				value={groupId}
+				onChange={setGroupId}
+				title={t("chat:modeGroupSelector.title", { defaultValue: "Mode Groups" })}
+			/>
+			<div className="shrink-0">
+				<ModeSelector
+					value={mode}
+					title={t("chat:selectMode")}
+					onChange={onModeChange}
+					triggerClassName="w-full"
+					modeShortcutText={modeShortcutText}
+					customModes={customModes}
+					customModePrompts={customModePrompts}
+					filterGroupId={groupId}
+				/>
+			</div>
+		</div>
+	)
+}
 
 interface EditModeControlsProps {
 	mode: Mode
@@ -46,17 +80,13 @@ export const EditModeControls: React.FC<EditModeControlsProps> = ({
 				"z-30",
 			)}>
 			<div className={cn("flex", "items-center", "gap-1", "flex-1", "min-w-0")}>
-				<div className="shrink-0">
-					<ModeSelector
-						value={mode}
-						title={t("chat:selectMode")}
-						onChange={onModeChange}
-						triggerClassName="w-full"
-						modeShortcutText={modeShortcutText}
-						customModes={customModes}
-						customModePrompts={customModePrompts}
-					/>
-				</div>
+				<ModeGroupWithModeSelector
+					mode={mode}
+					onModeChange={onModeChange}
+					modeShortcutText={modeShortcutText}
+					customModes={customModes}
+					customModePrompts={customModePrompts}
+				/>
 			</div>
 			<div className={cn("flex", "items-center", "gap-0.5", "shrink-0", "ml-2")}>
 				<Button

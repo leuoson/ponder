@@ -120,6 +120,10 @@
 		"searchPlaceholder": "搜索模式...",
 		"noResults": "未找到结果"
 	},
+	"modeGroupSelector": {
+		"title": "模式分组",
+		"all": "全部分组"
+	},
 	"errorReadingFile": "读取文件时出错:",
 	"noValidImages": "没有处理有效图片",
 	"separator": "分隔符",
