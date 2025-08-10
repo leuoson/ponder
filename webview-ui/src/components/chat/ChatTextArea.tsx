@@ -877,7 +877,6 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 		)
 
 		const [isTtsPlaying, setIsTtsPlaying] = useState(false)
-		const [optimisticModeGroup, setOptimisticModeGroup] = useState<string | undefined>(undefined)
 
 		useEvent("message", (event: MessageEvent) => {
 			const message: ExtensionMessage = event.data
@@ -903,30 +902,24 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 		// Use persisted mode group selection from extension state
 		const { selectedModeGroup } = useExtensionState()
 
-		// Auto-select first group if no group is selected
+		// Optimistic mode-group for instant UI update before extension state catches up
+		const [optimisticModeGroup, setOptimisticModeGroup] = useState<string | undefined>(undefined)
+
+		// Auto-select first group if none selected on startup (do not select mode here)
 		React.useEffect(() => {
-			if (selectedModeGroup === undefined) {
-				if (DEFAULT_MODE_GROUPS.length > 0) {
-					const firstGroupId = DEFAULT_MODE_GROUPS[0].id
-					vscode.postMessage({ type: "selectedModeGroup", text: firstGroupId })
-				}
+			if (selectedModeGroup === undefined && DEFAULT_MODE_GROUPS.length > 0) {
+				const firstGroupId = DEFAULT_MODE_GROUPS[0].id
+				setOptimisticModeGroup(firstGroupId)
+				vscode.postMessage({ type: "selectedModeGroup", text: firstGroupId })
 			}
 		}, [selectedModeGroup])
 
-		// Clear optimistic mode group when actual state updates to match it
+		// Auto-select first mode when mode group changes or when allModes becomes available
 		React.useEffect(() => {
-			if (optimisticModeGroup !== undefined && selectedModeGroup === optimisticModeGroup) {
-				setOptimisticModeGroup(undefined)
-			}
-		}, [selectedModeGroup, optimisticModeGroup])
-
-		// Auto-select first mode when mode group changes (including initial load)
-		React.useEffect(() => {
-			if (selectedModeGroup && allModes.length > 0) {
-				// Get the modes for the current group
-				const modesForGroup = allModes.filter((m) => m.modeGroups?.includes(selectedModeGroup))
-
-				// If there are modes in this group and current mode is not in this group, select the first one
+			// when selected group changes (or optimistic group is set), filter & pick first
+			const effectiveGroup = optimisticModeGroup ?? selectedModeGroup
+			if (effectiveGroup && allModes.length > 0) {
+				const modesForGroup = allModes.filter((m) => m.modeGroups?.includes(effectiveGroup))
 				if (modesForGroup.length > 0) {
 					const currentModeInGroup = modesForGroup.find((m) => m.slug === mode)
 					if (!currentModeInGroup) {
@@ -936,40 +929,24 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 					}
 				}
 			}
-		}, [selectedModeGroup, allModes, mode, setMode])
+		}, [selectedModeGroup, optimisticModeGroup, allModes, setMode, mode])
 
-		// Get the current effective mode group (optimistic or actual)
-		const currentModeGroup = optimisticModeGroup !== undefined ? optimisticModeGroup : selectedModeGroup
+		// Determine filter group for ModeSelector (optimistic takes precedence for instant filtering)
+		const currentModeGroup = (optimisticModeGroup ?? selectedModeGroup) || DEFAULT_MODE_GROUPS[0]?.id
 
-		// Handle mode group change and auto-select first mode in the group
-		const handleGroupChange = useCallback(
-			(newGroupId?: string) => {
-				// Since we no longer have "All Groups", newGroupId should always be defined
-				if (!newGroupId) return
-
-				// Set optimistic mode group immediately for UI responsiveness
-				setOptimisticModeGroup(newGroupId)
-
-				// Send mode group change to backend for persistence
-				vscode.postMessage({ type: "selectedModeGroup", text: newGroupId })
-
-				// Get the modes for the new group
-				const modesForGroup = allModes.filter((m) => m.modeGroups?.includes(newGroupId))
-
-				// Always switch to the first mode in the new group
-				if (modesForGroup.length > 0) {
-					const firstMode = modesForGroup[0]
-					handleModeChange(firstMode.slug)
-				}
-			},
-			[allModes, handleModeChange],
-		)
+		// Handle mode group change - only responsible for setting the mode group
+		const handleGroupChange = useCallback((newGroupId?: string) => {
+			if (!newGroupId) return
+			// set optimistic first so ModeSelector filters immediately
+			setOptimisticModeGroup(newGroupId)
+			vscode.postMessage({ type: "selectedModeGroup", text: newGroupId })
+		}, [])
 
 		// Helper function to render mode selector with group selector
 		const renderModeSelector = () => (
 			<div className="flex items-center gap-1 w-full min-w-0">
 				<ModeGroupSelector
-					value={selectedModeGroup}
+					value={currentModeGroup}
 					onChange={handleGroupChange}
 					title={t("chat:modeGroupSelector.title", { defaultValue: "Mode Groups" })}
 				/>
