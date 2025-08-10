@@ -3,6 +3,7 @@ import * as vscode from "vscode"
 import { promises as fs } from "fs"
 
 import type { ModeConfig } from "@roo-code/types"
+import { DEFAULT_MODE_GROUPS } from "@roo-code/types"
 
 import { getAllModesWithLocalization } from "../../../shared/modes"
 
