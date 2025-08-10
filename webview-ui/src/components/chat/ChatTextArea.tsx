@@ -922,6 +922,23 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 			}
 		}, [selectedModeGroup, optimisticModeGroup])
 
+		// Auto-select first mode when mode group changes (including initial load)
+		React.useEffect(() => {
+			if (selectedModeGroup && allModes.length > 0) {
+				// Get the modes for the current group
+				const modesForGroup = allModes.filter((m) => m.modeGroups?.includes(selectedModeGroup))
+
+				// If there are modes in this group and current mode is not in this group, select the first one
+				if (modesForGroup.length > 0) {
+					const currentModeInGroup = modesForGroup.find((m) => m.slug === mode)
+					if (!currentModeInGroup) {
+						const firstMode = modesForGroup[0]
+						handleModeChange(firstMode.slug)
+					}
+				}
+			}
+		}, [selectedModeGroup, allModes, mode, handleModeChange])
+
 		// Get the current effective mode group (optimistic or actual)
 		const currentModeGroup = optimisticModeGroup !== undefined ? optimisticModeGroup : selectedModeGroup
 
