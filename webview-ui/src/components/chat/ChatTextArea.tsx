@@ -933,11 +933,12 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 					const currentModeInGroup = modesForGroup.find((m) => m.slug === mode)
 					if (!currentModeInGroup) {
 						const firstMode = modesForGroup[0]
-						handleModeChange(firstMode.slug)
+						setMode(firstMode.slug)
+						vscode.postMessage({ type: "mode", text: firstMode.slug })
 					}
 				}
 			}
-		}, [selectedModeGroup, allModes, mode, handleModeChange])
+		}, [selectedModeGroup, allModes, mode, setMode])
 
 		// Get the current effective mode group (optimistic or actual)
 		const currentModeGroup = optimisticModeGroup !== undefined ? optimisticModeGroup : selectedModeGroup
