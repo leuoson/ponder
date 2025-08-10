@@ -6,6 +6,7 @@ import { mentionRegex, mentionRegexGlobal, commandRegexGlobal, unescapeSpaces } 
 import { WebviewMessage } from "@roo/WebviewMessage"
 import { Mode, getAllModes } from "@roo/modes"
 import { ExtensionMessage } from "@roo/ExtensionMessage"
+import { DEFAULT_MODE_GROUPS } from "@roo-code/types"
 
 import { vscode } from "@/utils/vscode"
 import { useExtensionState } from "@/context/ExtensionStateContext"
@@ -905,13 +906,10 @@ const ChatTextArea = forwardRef<HTMLTextAreaElement, ChatTextAreaProps>(
 		// Auto-select first group if no group is selected
 		React.useEffect(() => {
 			if (selectedModeGroup === undefined) {
-				// Import DEFAULT_MODE_GROUPS and get first group
-				import("@roo-code/types").then(({ DEFAULT_MODE_GROUPS }) => {
-					if (DEFAULT_MODE_GROUPS.length > 0) {
-						const firstGroupId = DEFAULT_MODE_GROUPS[0].id
-						vscode.postMessage({ type: "selectedModeGroup", text: firstGroupId })
-					}
-				})
+				if (DEFAULT_MODE_GROUPS.length > 0) {
+					const firstGroupId = DEFAULT_MODE_GROUPS[0].id
+					vscode.postMessage({ type: "selectedModeGroup", text: firstGroupId })
+				}
 			}
 		}, [selectedModeGroup])
 
