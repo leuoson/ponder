@@ -12,13 +12,17 @@ export async function getModesSection(context: vscode.ExtensionContext, currentL
 
 	// Get all modes with their overrides and localization from extension state
 	const allModes = await getAllModesWithLocalization(context, currentLocale)
+	// Filter modes by the currently selected mode group (fallback to first default group)
+	const selectedModeGroup: string | undefined = context.globalState.get("selectedModeGroup")
+	const effectiveGroup = selectedModeGroup ?? DEFAULT_MODE_GROUPS[0]?.id
+	const modesForPrompt = effectiveGroup ? allModes.filter((m) => m.modeGroups?.includes(effectiveGroup)) : allModes
 
 	let modesContent = `====
 
 MODES
 
 - These are the currently available modes:
-${allModes
+${modesForPrompt
 	.map((mode: ModeConfig) => {
 		let description: string
 		if (mode.whenToUse && mode.whenToUse.trim() !== "") {
