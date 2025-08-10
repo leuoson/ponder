@@ -1,7 +1,12 @@
 import { z } from "zod"
 
-import { reasoningEffortsSchema, modelInfoSchema } from "./model.js"
+import { reasoningEffortsSchema, verbosityLevelsSchema, modelInfoSchema } from "./model.js"
 import { codebaseIndexProviderSchema } from "./codebase-index.js"
+
+// Extended schema that includes "minimal" for GPT-5 models
+export const extendedReasoningEffortsSchema = z.union([reasoningEffortsSchema, z.literal("minimal")])
+
+export type ReasoningEffortWithMinimal = z.infer<typeof extendedReasoningEffortsSchema>
 
 /**
  * ProviderName
@@ -36,6 +41,8 @@ export const providerNames = [
 	"huggingface",
 	"cerebras",
 	"sambanova",
+	"zai",
+	"fireworks",
 ] as const
 
 export const providerNamesSchema = z.enum(providerNames)
@@ -74,9 +81,12 @@ const baseProviderSettingsSchema = z.object({
 
 	// Model reasoning.
 	enableReasoningEffort: z.boolean().optional(),
-	reasoningEffort: reasoningEffortsSchema.optional(),
+	reasoningEffort: extendedReasoningEffortsSchema.optional(),
 	modelMaxTokens: z.number().optional(),
 	modelMaxThinkingTokens: z.number().optional(),
+
+	// Model verbosity.
+	verbosity: verbosityLevelsSchema.optional(),
 })
 
 // Several of the providers share common model config properties.
@@ -257,6 +267,15 @@ const sambaNovaSchema = apiModelIdProviderModelSchema.extend({
 	sambaNovaApiKey: z.string().optional(),
 })
 
+const zaiSchema = apiModelIdProviderModelSchema.extend({
+	zaiApiKey: z.string().optional(),
+	zaiApiLine: z.union([z.literal("china"), z.literal("international")]).optional(),
+})
+
+const fireworksSchema = apiModelIdProviderModelSchema.extend({
+	fireworksApiKey: z.string().optional(),
+})
+
 const defaultSchema = z.object({
 	apiProvider: z.undefined(),
 })
@@ -290,6 +309,8 @@ export const providerSettingsSchemaDiscriminated = z.discriminatedUnion("apiProv
 	litellmSchema.merge(z.object({ apiProvider: z.literal("litellm") })),
 	cerebrasSchema.merge(z.object({ apiProvider: z.literal("cerebras") })),
 	sambaNovaSchema.merge(z.object({ apiProvider: z.literal("sambanova") })),
+	zaiSchema.merge(z.object({ apiProvider: z.literal("zai") })),
+	fireworksSchema.merge(z.object({ apiProvider: z.literal("fireworks") })),
 	defaultSchema,
 ])
 
@@ -323,10 +344,19 @@ export const providerSettingsSchema = z.object({
 	...litellmSchema.shape,
 	...cerebrasSchema.shape,
 	...sambaNovaSchema.shape,
+	...zaiSchema.shape,
+	...fireworksSchema.shape,
 	...codebaseIndexProviderSchema.shape,
 })
 
 export type ProviderSettings = z.infer<typeof providerSettingsSchema>
+
+export const providerSettingsWithIdSchema = providerSettingsSchema.extend({ id: z.string().optional() })
+export const discriminatedProviderSettingsWithIdSchema = providerSettingsSchemaDiscriminated.and(
+	z.object({ id: z.string().optional() }),
+)
+export type ProviderSettingsWithId = z.infer<typeof providerSettingsWithIdSchema>
+
 export const PROVIDER_SETTINGS_KEYS = providerSettingsSchema.keyof().options
 
 export const MODEL_ID_KEYS: Partial<keyof ProviderSettings>[] = [

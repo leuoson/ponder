@@ -260,6 +260,8 @@
 		"getCerebrasApiKey": "取得 Cerebras API 金鑰",
 		"chutesApiKey": "Chutes API 金鑰",
 		"getChutesApiKey": "取得 Chutes API 金鑰",
+		"fireworksApiKey": "Fireworks API 金鑰",
+		"getFireworksApiKey": "取得 Fireworks API 金鑰",
 		"deepSeekApiKey": "DeepSeek API 金鑰",
 		"getDeepSeekApiKey": "取得 DeepSeek API 金鑰",
 		"doubaoApiKey": "豆包 API 金鑰",
@@ -267,6 +269,10 @@
 		"moonshotApiKey": "Moonshot API 金鑰",
 		"getMoonshotApiKey": "取得 Moonshot API 金鑰",
 		"moonshotBaseUrl": "Moonshot 服務站點",
+		"zaiApiKey": "Z AI API 金鑰",
+		"getZaiApiKey": "取得 Z AI API 金鑰",
+		"zaiEntrypoint": "Z AI 服務站點",
+		"zaiEntrypointDescription": "請根據您的位置選擇適當的 API 服務站點。如果您在中國，請選擇 open.bigmodel.cn。否則，請選擇 api.z.ai。",
 		"geminiApiKey": "Gemini API 金鑰",
 		"getGroqApiKey": "取得 Groq API 金鑰",
 		"groqApiKey": "Groq API 金鑰",
@@ -422,9 +428,17 @@
 		},
 		"reasoningEffort": {
 			"label": "模型推理強度",
+			"minimal": "最小 (最快)",
 			"high": "高",
 			"medium": "中",
 			"low": "低"
+		},
+		"verbosity": {
+			"label": "輸出詳細程度",
+			"high": "高",
+			"medium": "中",
+			"low": "低",
+			"description": "控制模型回應的詳細程度。低詳細度產生簡潔的回答，而高詳細度提供詳盡的解釋。"
 		},
 		"setReasoningLevel": "啟用推理工作量",
 		"claudeCode": {

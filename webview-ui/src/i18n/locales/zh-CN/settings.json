@@ -260,6 +260,8 @@
 		"getCerebrasApiKey": "获取 Cerebras API 密钥",
 		"chutesApiKey": "Chutes API 密钥",
 		"getChutesApiKey": "获取 Chutes API 密钥",
+		"fireworksApiKey": "Fireworks API 密钥",
+		"getFireworksApiKey": "获取 Fireworks API 密钥",
 		"deepSeekApiKey": "DeepSeek API 密钥",
 		"getDeepSeekApiKey": "获取 DeepSeek API 密钥",
 		"doubaoApiKey": "豆包 API 密钥",
@@ -267,6 +269,10 @@
 		"moonshotApiKey": "Moonshot API 密钥",
 		"getMoonshotApiKey": "获取 Moonshot API 密钥",
 		"moonshotBaseUrl": "Moonshot 服务站点",
+		"zaiApiKey": "Z AI API 密钥",
+		"getZaiApiKey": "获取 Z AI API 密钥",
+		"zaiEntrypoint": "Z AI 服务站点",
+		"zaiEntrypointDescription": "请根据您的位置选择适当的 API 服务站点。如果您在中国，请选择 open.bigmodel.cn。否则，请选择 api.z.ai。",
 		"geminiApiKey": "Gemini API 密钥",
 		"getGroqApiKey": "获取 Groq API 密钥",
 		"groqApiKey": "Groq API 密钥",
@@ -422,9 +428,17 @@
 		},
 		"reasoningEffort": {
 			"label": "模型推理强度",
+			"minimal": "最小 (最快)",
 			"high": "高",
 			"medium": "中",
 			"low": "低"
+		},
+		"verbosity": {
+			"label": "输出详细程度",
+			"high": "高",
+			"medium": "中",
+			"low": "低",
+			"description": "控制模型响应的详细程度。低详细度产生简洁的回答，而高详细度提供详尽的解释。"
 		},
 		"setReasoningLevel": "启用推理工作量",
 		"claudeCode": {

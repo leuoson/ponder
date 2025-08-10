@@ -10,21 +10,26 @@ import pWaitFor from "p-wait-for"
 import { serializeError } from "serialize-error"
 
 import {
+	type TaskLike,
+	type TaskEvents,
 	type ProviderSettings,
 	type TokenUsage,
 	type ToolUsage,
 	type ToolName,
 	type ContextCondense,
-	type ClineAsk,
 	type ClineMessage,
 	type ClineSay,
+	type ClineAsk,
+	type BlockingAsk,
 	type ToolProgressStatus,
-	DEFAULT_CONSECUTIVE_MISTAKE_LIMIT,
 	type HistoryItem,
+	RooCodeEventName,
 	TelemetryEventName,
 	TodoItem,
 	getApiProtocol,
 	getModelId,
+	DEFAULT_CONSECUTIVE_MISTAKE_LIMIT,
+	isBlockingAsk,
 } from "@roo-code/types"
 import { TelemetryService } from "@roo-code/telemetry"
 import { CloudService } from "@roo-code/cloud"
@@ -72,7 +77,8 @@ import { ToolRepetitionDetector } from "../tools/ToolRepetitionDetector"
 import { FileContextTracker } from "../context-tracking/FileContextTracker"
 import { RooIgnoreController } from "../ignore/RooIgnoreController"
 import { RooProtectedController } from "../protect/RooProtectedController"
-import { type AssistantMessageContent, parseAssistantMessage, presentAssistantMessage } from "../assistant-message"
+import { type AssistantMessageContent, presentAssistantMessage, parseAssistantMessage } from "../assistant-message"
+import { AssistantMessageParser } from "../assistant-message/AssistantMessageParser"
 import { truncateConversationIfNeeded } from "../sliding-window"
 import { ClineProvider } from "../webview/ClineProvider"
 import { MultiSearchReplaceDiffStrategy } from "../diff/strategies/multi-search-replace"
@@ -96,24 +102,6 @@ import { AutoApprovalHandler } from "./AutoApprovalHandler"
 
 const MAX_EXPONENTIAL_BACKOFF_SECONDS = 600 // 10 minutes
 
-export type TaskEvents = {
-	message: [{ action: "created" | "updated"; message: ClineMessage }]
-	taskStarted: []
-	taskModeSwitched: [taskId: string, mode: string]
-	taskPaused: []
-	taskUnpaused: []
-	taskAskResponded: []
-	taskAborted: []
-	taskSpawned: [taskId: string]
-	taskCompleted: [taskId: string, tokenUsage: TokenUsage, toolUsage: ToolUsage]
-	taskTokenUsageUpdated: [taskId: string, tokenUsage: TokenUsage]
-	taskToolFailed: [taskId: string, tool: ToolName, error: string]
-}
-
-export type TaskEventHandlers = {
-	[K in keyof TaskEvents]: (...args: TaskEvents[K]) => void | Promise<void>
-}
-
 export type TaskOptions = {
 	provider: ClineProvider
 	apiConfiguration: ProviderSettings
@@ -132,7 +120,7 @@ export type TaskOptions = {
 	onCreated?: (task: Task) => void
 }
 
-export class Task extends EventEmitter<TaskEvents> {
+export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 	todoList?: TodoItem[]
 	readonly taskId: string
 	readonly instanceId: string
@@ -189,6 +177,7 @@ export class Task extends EventEmitter<TaskEvents> {
 	providerRef: WeakRef<ClineProvider>
 	private readonly globalStoragePath: string
 	abort: boolean = false
+	blockingAsk?: BlockingAsk
 	didFinishAbortingStream = false
 	abandoned = false
 	isInitialized = false
@@ -252,6 +241,7 @@ export class Task extends EventEmitter<TaskEvents> {
 	isWaitingForFirstChunk = false
 	isStreaming = false
 	currentStreamingContentIndex = 0
+	currentStreamingDidCheckpoint = false
 	assistantMessageContent: AssistantMessageContent[] = []
 	presentAssistantMessageLocked = false
 	presentAssistantMessageHasPendingUpdates = false
@@ -260,6 +250,10 @@ export class Task extends EventEmitter<TaskEvents> {
 	didRejectTool = false
 	didAlreadyUseTool = false
 	didCompleteReadingStream = false
+	assistantMessageParser?: AssistantMessageParser
+	isAssistantMessageParserEnabled = false
+	private lastUsedInstructions?: string
+	private skipPrevResponseIdOnce: boolean = false
 
 	constructor({
 		provider,
@@ -545,7 +539,7 @@ export class Task extends EventEmitter<TaskEvents> {
 		this.clineMessages.push(message)
 		const provider = this.providerRef.deref()
 		await provider?.postStateToWebview()
-		this.emit("message", { action: "created", message })
+		this.emit(RooCodeEventName.Message, { action: "created", message })
 		await this.saveClineMessages()
 
 		const shouldCaptureMessage = message.partial !== true && CloudService.isEnabled()
@@ -567,7 +561,7 @@ export class Task extends EventEmitter<TaskEvents> {
 	private async updateClineMessage(message: ClineMessage) {
 		const provider = this.providerRef.deref()
 		await provider?.postMessageToWebview({ type: "messageUpdated", clineMessage: message })
-		this.emit("message", { action: "updated", message })
+		this.emit(RooCodeEventName.Message, { action: "updated", message })
 
 		const shouldCaptureMessage = message.partial !== true && CloudService.isEnabled()
 
@@ -596,7 +590,7 @@ export class Task extends EventEmitter<TaskEvents> {
 				mode: this._taskMode || defaultModeSlug, // Use the task's own mode, not the current provider mode
 			})
 
-			this.emit("taskTokenUsageUpdated", this.taskId, tokenUsage)
+			this.emit(RooCodeEventName.TaskTokenUsageUpdated, this.taskId, tokenUsage)
 
 			await this.providerRef.deref()?.updateTaskHistory(historyItem)
 		} catch (error) {
@@ -702,7 +696,17 @@ export class Task extends EventEmitter<TaskEvents> {
 			await this.addToClineMessages({ ts: askTs, type: "ask", ask: type, text, isProtected })
 		}
 
+		// Detect if the task will enter an idle state.
+		const isReady = this.askResponse !== undefined || this.lastMessageTs !== askTs
+
+		if (!partial && !isReady && isBlockingAsk(type)) {
+			this.blockingAsk = type
+			this.emit(RooCodeEventName.TaskIdle, this.taskId)
+		}
+
+		console.log(`[Task#${this.taskId}] pWaitFor askResponse(${type}) -> blocking`)
 		await pWaitFor(() => this.askResponse !== undefined || this.lastMessageTs !== askTs, { interval: 100 })
+		console.log(`[Task#${this.taskId}] pWaitFor askResponse(${type}) -> unblocked (${this.askResponse})`)
 
 		if (this.lastMessageTs !== askTs) {
 			// Could happen if we send multiple asks in a row i.e. with
@@ -715,14 +719,51 @@ export class Task extends EventEmitter<TaskEvents> {
 		this.askResponse = undefined
 		this.askResponseText = undefined
 		this.askResponseImages = undefined
-		this.emit("taskAskResponded")
+
+		// Switch back to an active state.
+		if (this.blockingAsk) {
+			this.blockingAsk = undefined
+			this.emit(RooCodeEventName.TaskActive, this.taskId)
+		}
+
+		this.emit(RooCodeEventName.TaskAskResponded)
 		return result
 	}
 
-	async handleWebviewAskResponse(askResponse: ClineAskResponse, text?: string, images?: string[]) {
+	public setMessageResponse(text: string, images?: string[]) {
+		this.handleWebviewAskResponse("messageResponse", text, images)
+	}
+
+	handleWebviewAskResponse(askResponse: ClineAskResponse, text?: string, images?: string[]) {
 		this.askResponse = askResponse
 		this.askResponseText = text
 		this.askResponseImages = images
+	}
+
+	public submitUserMessage(text: string, images?: string[]): void {
+		try {
+			const trimmed = (text ?? "").trim()
+			const imgs = images ?? []
+
+			if (!trimmed && imgs.length === 0) {
+				return
+			}
+
+			const provider = this.providerRef.deref()
+			if (!provider) {
+				console.error("[Task#submitUserMessage] Provider reference lost")
+				return
+			}
+
+			void provider.postMessageToWebview({
+				type: "invoke",
+				invoke: "sendMessage",
+				text: trimmed,
+				images: imgs,
+			})
+		} catch (error) {
+			console.error("[Task#submitUserMessage] Failed to submit user message:", error)
+		}
 	}
 
 	async handleTerminalOperation(terminalOperation: "continue" | "abort") {
@@ -811,6 +852,7 @@ export class Task extends EventEmitter<TaskEvents> {
 		progressStatus?: ToolProgressStatus,
 		options: {
 			isNonInteractive?: boolean
+			metadata?: Record<string, unknown>
 		} = {},
 		contextCondense?: ContextCondense,
 	): Promise<undefined> {
@@ -848,6 +890,7 @@ export class Task extends EventEmitter<TaskEvents> {
 						images,
 						partial,
 						contextCondense,
+						metadata: options.metadata,
 					})
 				}
 			} else {
@@ -863,6 +906,9 @@ export class Task extends EventEmitter<TaskEvents> {
 					lastMessage.images = images
 					lastMessage.partial = false
 					lastMessage.progressStatus = progressStatus
+					if (options.metadata) {
+						;(lastMessage as any).metadata = options.metadata
+					}
 
 					// Instead of streaming partialMessage events, we do a save
 					// and post like normal to persist to disk.
@@ -878,7 +924,15 @@ export class Task extends EventEmitter<TaskEvents> {
 						this.lastMessageTs = sayTs
 					}
 
-					await this.addToClineMessages({ ts: sayTs, type: "say", say: type, text, images, contextCondense })
+					await this.addToClineMessages({
+						ts: sayTs,
+						type: "say",
+						say: type,
+						text,
+						images,
+						contextCondense,
+						metadata: options.metadata,
+					})
 				}
 			}
 		} else {
@@ -947,7 +1001,7 @@ export class Task extends EventEmitter<TaskEvents> {
 	public async resumePausedTask(lastMessage: string) {
 		// Release this Cline instance from paused state.
 		this.isPaused = false
-		this.emit("taskUnpaused")
+		this.emit(RooCodeEventName.TaskUnpaused)
 
 		// Fake an answer from the subtask that it has completed running and
 		// this is the result of what it has done  add the message to the chat
@@ -981,7 +1035,10 @@ export class Task extends EventEmitter<TaskEvents> {
 			modifiedClineMessages.splice(lastRelevantMessageIndex + 1)
 		}
 
-		// since we don't use api_req_finished anymore, we need to check if the last api_req_started has a cost value, if it doesn't and no cancellation reason to present, then we remove it since it indicates an api request without any partial content streamed
+		// Since we don't use `api_req_finished` anymore, we need to check if the
+		// last `api_req_started` has a cost value, if it doesn't and no
+		// cancellation reason to present, then we remove it since it indicates
+		// an api request without any partial content streamed.
 		const lastApiReqStartedIndex = findLastIndex(
 			modifiedClineMessages,
 			(m) => m.type === "say" && m.say === "api_req_started",
@@ -990,6 +1047,7 @@ export class Task extends EventEmitter<TaskEvents> {
 		if (lastApiReqStartedIndex !== -1) {
 			const lastApiReqStarted = modifiedClineMessages[lastApiReqStartedIndex]
 			const { cost, cancelReason }: ClineApiReqInfo = JSON.parse(lastApiReqStarted.text || "{}")
+
 			if (cost === undefined && cancelReason === undefined) {
 				modifiedClineMessages.splice(lastApiReqStartedIndex, 1)
 			}
@@ -1009,7 +1067,7 @@ export class Task extends EventEmitter<TaskEvents> {
 		const lastClineMessage = this.clineMessages
 			.slice()
 			.reverse()
-			.find((m) => !(m.ask === "resume_task" || m.ask === "resume_completed_task")) // could be multiple resume tasks
+			.find((m) => !(m.ask === "resume_task" || m.ask === "resume_completed_task")) // Could be multiple resume tasks.
 
 		let askType: ClineAsk
 		if (lastClineMessage?.ask === "completion_result") {
@@ -1020,9 +1078,11 @@ export class Task extends EventEmitter<TaskEvents> {
 
 		this.isInitialized = true
 
-		const { response, text, images } = await this.ask(askType) // calls poststatetowebview
+		const { response, text, images } = await this.ask(askType) // Calls `postStateToWebview`.
+
 		let responseText: string | undefined
 		let responseImages: string[] | undefined
+
 		if (response === "messageResponse") {
 			await this.say("user_feedback", text, images)
 			responseText = text
@@ -1200,6 +1260,8 @@ export class Task extends EventEmitter<TaskEvents> {
 	}
 
 	public dispose(): void {
+		console.log(`[Task] disposing task ${this.taskId}.${this.instanceId}`)
+
 		// Stop waiting for child task completion.
 		if (this.pauseInterval) {
 			clearInterval(this.pauseInterval)
@@ -1261,7 +1323,7 @@ export class Task extends EventEmitter<TaskEvents> {
 		}
 
 		this.abort = true
-		this.emit("taskAborted")
+		this.emit(RooCodeEventName.TaskAborted)
 
 		try {
 			this.dispose() // Call the centralized dispose method
@@ -1303,11 +1365,11 @@ export class Task extends EventEmitter<TaskEvents> {
 		let nextUserContent = userContent
 		let includeFileDetails = true
 
-		this.emit("taskStarted")
+		this.emit(RooCodeEventName.TaskStarted)
 
 		while (!this.abort) {
 			const didEndLoop = await this.recursivelyMakeClineRequests(nextUserContent, includeFileDetails)
-			includeFileDetails = false // we only need file details the first time
+			includeFileDetails = false // We only need file details the first time.
 
 			// The way this agentic loop works is that cline will be given a
 			// task that he then calls tools to complete. Unless there's an
@@ -1526,6 +1588,7 @@ export class Task extends EventEmitter<TaskEvents> {
 
 			// Reset streaming state.
 			this.currentStreamingContentIndex = 0
+			this.currentStreamingDidCheckpoint = false
 			this.assistantMessageContent = []
 			this.didCompleteReadingStream = false
 			this.userMessageContent = []
@@ -1534,6 +1597,9 @@ export class Task extends EventEmitter<TaskEvents> {
 			this.didAlreadyUseTool = false
 			this.presentAssistantMessageLocked = false
 			this.presentAssistantMessageHasPendingUpdates = false
+			if (this.assistantMessageParser) {
+				this.assistantMessageParser.reset()
+			}
 
 			await this.diffViewProvider.reset()
 
@@ -1568,9 +1634,14 @@ export class Task extends EventEmitter<TaskEvents> {
 						case "text": {
 							assistantMessage += chunk.text
 
-							// Parse raw assistant message into content blocks.
+							// Parse raw assistant message chunk into content blocks.
 							const prevLength = this.assistantMessageContent.length
-							this.assistantMessageContent = parseAssistantMessage(assistantMessage)
+							if (this.isAssistantMessageParserEnabled && this.assistantMessageParser) {
+								this.assistantMessageContent = this.assistantMessageParser.processChunk(chunk.text)
+							} else {
+								// Use the old parsing method when experiment is disabled
+								this.assistantMessageContent = parseAssistantMessage(assistantMessage)
+							}
 
 							if (this.assistantMessageContent.length > prevLength) {
 								// New content we need to present, reset to
@@ -1633,13 +1704,13 @@ export class Task extends EventEmitter<TaskEvents> {
 					// If this.abort is already true, it means the user clicked cancel, so we should
 					// treat this as "user_cancelled" rather than "streaming_failed"
 					const cancelReason = this.abort ? "user_cancelled" : "streaming_failed"
+
 					const streamingFailedMessage = this.abort
 						? undefined
 						: (error.message ?? JSON.stringify(serializeError(error), null, 2))
 
-					// Now call abortTask after determining the cancel reason
+					// Now call abortTask after determining the cancel reason.
 					await this.abortTask()
-
 					await abortStream(cancelReason, streamingFailedMessage)
 
 					const history = await provider?.getTaskWithId(this.taskId)
@@ -1690,6 +1761,13 @@ export class Task extends EventEmitter<TaskEvents> {
 			// Can't just do this b/c a tool could be in the middle of executing.
 			// this.assistantMessageContent.forEach((e) => (e.partial = false))
 
+			// Now that the stream is complete, finalize any remaining partial content blocks
+			if (this.isAssistantMessageParserEnabled && this.assistantMessageParser) {
+				this.assistantMessageParser.finalizeContentBlocks()
+				this.assistantMessageContent = this.assistantMessageParser.getContentBlocks()
+			}
+			// When using old parser, no finalization needed - parsing already happened during streaming
+
 			if (partialBlocks.length > 0) {
 				// If there is content to update then it will complete and
 				// update `this.userMessageContentReady` to true, which we
@@ -1699,9 +1777,16 @@ export class Task extends EventEmitter<TaskEvents> {
 				presentAssistantMessage(this)
 			}
 
+			await this.persistGpt5Metadata(reasoningMessage)
+
 			updateApiReqMsg()
 			await this.saveClineMessages()
 			await this.providerRef.deref()?.postStateToWebview()
+
+			// Reset parser after each complete conversation round
+			if (this.assistantMessageParser) {
+				this.assistantMessageParser.reset()
+			}
 
 			// Now add to apiConversationHistory.
 			// Need to save assistant responses to file before proceeding to
@@ -1912,6 +1997,7 @@ export class Task extends EventEmitter<TaskEvents> {
 		Task.lastGlobalApiRequestTime = Date.now()
 
 		const systemPrompt = await this.getSystemPrompt()
+		this.lastUsedInstructions = systemPrompt
 		const { contextTokens } = this.getTokenUsage()
 
 		if (contextTokens) {
@@ -1950,6 +2036,10 @@ export class Task extends EventEmitter<TaskEvents> {
 			if (truncateResult.error) {
 				await this.say("condense_context_error", truncateResult.error)
 			} else if (truncateResult.summary) {
+				// A condense operation occurred; for the next GPT‑5 API call we should NOT
+				// send previous_response_id so the request reflects the fresh condensed context.
+				this.skipPrevResponseIdOnce = true
+
 				const { summary, cost, prevContextTokens, newContextTokens = 0 } = truncateResult
 				const contextCondense: ContextCondense = { summary, cost, newContextTokens, prevContextTokens }
 				await this.say(
@@ -1966,7 +2056,7 @@ export class Task extends EventEmitter<TaskEvents> {
 		}
 
 		const messagesSinceLastSummary = getMessagesSinceLastSummary(this.apiConversationHistory)
-		const cleanConversationHistory = maybeRemoveImageBlocks(messagesSinceLastSummary, this.api).map(
+		let cleanConversationHistory = maybeRemoveImageBlocks(messagesSinceLastSummary, this.api).map(
 			({ role, content }) => ({ role, content }),
 		)
 
@@ -1982,9 +2072,41 @@ export class Task extends EventEmitter<TaskEvents> {
 			throw new Error("Auto-approval limit reached and user did not approve continuation")
 		}
 
+		// Determine GPT‑5 previous_response_id from last persisted assistant turn (if available),
+		// unless a condense just occurred (skip once after condense).
+		let previousResponseId: string | undefined = undefined
+		try {
+			const modelId = this.api.getModel().id
+			if (modelId && modelId.startsWith("gpt-5") && !this.skipPrevResponseIdOnce) {
+				// Find the last assistant message that has a previous_response_id stored
+				const idx = findLastIndex(
+					this.clineMessages,
+					(m) =>
+						m.type === "say" &&
+						(m as any).say === "text" &&
+						(m as any).metadata?.gpt5?.previous_response_id,
+				)
+				if (idx !== -1) {
+					// Use the previous_response_id from the last assistant message for this request
+					previousResponseId = ((this.clineMessages[idx] as any).metadata.gpt5.previous_response_id ||
+						undefined) as string | undefined
+				}
+			}
+		} catch {
+			// non-fatal
+		}
+
 		const metadata: ApiHandlerCreateMessageMetadata = {
 			mode: mode,
 			taskId: this.taskId,
+			...(previousResponseId ? { previousResponseId } : {}),
+			// If a condense just occurred, explicitly suppress continuity fallback for the next call
+			...(this.skipPrevResponseIdOnce ? { suppressPreviousResponseId: true } : {}),
+		}
+
+		// Reset skip flag after applying (it only affects the immediate next call)
+		if (this.skipPrevResponseIdOnce) {
+			this.skipPrevResponseIdOnce = false
 		}
 
 		const stream = this.api.createMessage(systemPrompt, cleanConversationHistory, metadata)
@@ -2126,7 +2248,36 @@ export class Task extends EventEmitter<TaskEvents> {
 		this.toolUsage[toolName].failures++
 
 		if (error) {
-			this.emit("taskToolFailed", this.taskId, toolName, error)
+			this.emit(RooCodeEventName.TaskToolFailed, this.taskId, toolName, error)
+		}
+	}
+
+	/**
+	 * Persist GPT-5 per-turn metadata (previous_response_id, instructions, reasoning_summary)
+	 * onto the last complete assistant say("text") message.
+	 */
+	private async persistGpt5Metadata(reasoningMessage?: string): Promise<void> {
+		try {
+			const modelId = this.api.getModel().id
+			if (!modelId || !modelId.startsWith("gpt-5")) return
+
+			const lastResponseId: string | undefined = (this.api as any)?.getLastResponseId?.()
+			const idx = findLastIndex(
+				this.clineMessages,
+				(m) => m.type === "say" && (m as any).say === "text" && m.partial !== true,
+			)
+			if (idx !== -1) {
+				const msg = this.clineMessages[idx] as any
+				msg.metadata = msg.metadata ?? {}
+				msg.metadata.gpt5 = {
+					...(msg.metadata.gpt5 ?? {}),
+					previous_response_id: lastResponseId,
+					instructions: this.lastUsedInstructions,
+					reasoning_summary: (reasoningMessage ?? "").trim() || undefined,
+				}
+			}
+		} catch {
+			// Non-fatal error in metadata persistence
 		}
 	}
 
